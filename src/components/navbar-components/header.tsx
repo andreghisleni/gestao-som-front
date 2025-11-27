@@ -1,4 +1,4 @@
-import { Link, useParams } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import InfoMenu from '@/components/navbar-components/info-menu';
 import Logo from '@/components/navbar-components/logo';
 import NotificationMenu from '@/components/navbar-components/notification-menu';
@@ -20,22 +20,13 @@ import { MenuLink } from './menu-link';
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  // { href: '/dashboard', label: 'Home' },
-  { href: '/sessions', label: 'Sessions' },
-  // { href: '/settings', label: 'Settings' },
-];
-
-const eventNavigationLinks = [
   { href: '/dashboard', label: 'Dashboard' },
-  { href: '/members', label: 'Membros' },
-  { href: '/tickets', label: 'Tickets' },
-  { href: '/payments', label: 'Pagamentos' },
+  { href: '/inventory', label: 'Inventário' },
+  { href: '/budgets', label: 'Orçamentos' },
 ];
 
 export function Header() {
-  const eventId = useParams({
-    strict: false,
-  }).eventId as string | undefined;
+
 
   return (
     <header className="border-b px-4 md:px-6">
@@ -50,7 +41,7 @@ export function Header() {
                 size="icon"
                 variant="ghost"
               >
-                {/** biome-ignore lint/a11y/noSvgWithoutTitle: <explanation> */}
+                {/* ícone do menu */}
                 <svg
                   className="pointer-events-none"
                   fill="none"
@@ -63,6 +54,7 @@ export function Header() {
                   width={16}
                   xmlns="http://www.w3.org/2000/svg"
                 >
+                  <title>Menu</title>
                   <path
                     className="-translate-y-[7px] origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[315deg]"
                     d="M4 12L20 12"
@@ -92,20 +84,6 @@ export function Header() {
                     </NavigationMenuItem>
                   ))}
 
-                  {eventId &&
-                    eventNavigationLinks.map((link, index) => (
-                      <NavigationMenuItem
-                        className="w-full"
-                        key={index.toString()}
-                      >
-                        <MenuLink
-                          className="py-1.5"
-                          href={`/${eventId}${link.href}`}
-                        >
-                          {link.label}
-                        </MenuLink>
-                      </NavigationMenuItem>
-                    ))}
                 </NavigationMenuList>
               </NavigationMenu>
             </PopoverContent>
@@ -133,17 +111,6 @@ export function Header() {
                   </NavigationMenuItem>
                 ))}
 
-                {eventId &&
-                  eventNavigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index.toString()}>
-                      <MenuLink
-                        className="py-1.5 font-medium text-muted-foreground hover:text-primary"
-                        href={`/${eventId}${link.href}`}
-                      >
-                        {link.label}
-                      </MenuLink>
-                    </NavigationMenuItem>
-                  ))}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
