@@ -73,6 +73,11 @@ export function EquipmentForm({ data }: { data?: Equipment }) {
         setIsOpen(false);
         toast.success("Equipamento criado!");
       },
+      onError(error) {
+        toast.error("Erro ao cadastrar equipamento", {
+          description: error.response.data.error,
+        });
+      },
     },
   });
 
@@ -84,6 +89,11 @@ export function EquipmentForm({ data }: { data?: Equipment }) {
         });
         setIsOpen(false);
         toast.success("Equipamento atualizado!");
+      },
+      onError(error) {
+        toast.error("Erro ao atualizar equipamento", {
+          description: error.response.data.error,
+        });
       },
     },
   });

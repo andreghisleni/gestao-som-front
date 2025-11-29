@@ -62,7 +62,7 @@ export function CategoryForm({ data }: { data?: Category }) {
       },
       onError(error) {
         toast.error(`Erro ao criar ${formName}`, {
-          description: error.message,
+          description: error.response.data.error,
         });
       },
     },

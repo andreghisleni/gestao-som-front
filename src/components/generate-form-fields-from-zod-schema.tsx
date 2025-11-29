@@ -1,55 +1,49 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-import type { UseFormReturn } from 'react-hook-form';
-import z from 'zod';
+import type { UseFormReturn } from "react-hook-form";
+import z from "zod";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from './ui/form';
-import { Input } from './ui/input';
+} from "./ui/form";
+import { Input } from "./ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select';
-import { Switch } from './ui/switch';
+} from "./ui/select";
+import { Switch } from "./ui/switch";
+
+type extraFieldOptions = {
+  values?: { value: string; label: string; disabled?: boolean }[] | undefined;
+  loading: boolean;
+  type?: "date" | "array";
+};
 
 export function generateFormFieldsFromZodSchema<T extends z.ZodTypeAny>(
   schema: T,
   form: UseFormReturn<z.infer<T>>,
-  values: Record<
-    string,
-    {
-      values:
-        | { value: string; label: string; disabled?: boolean }[]
-        | undefined;
-      loading: boolean;
-    }
-  > = {}
+  values: Record<string, extraFieldOptions> = {}
 ) {
-  return Object.entries((schema as any).shape).map(([fieldName, fieldSchema]) => {
-    return renderField(fieldName, (fieldSchema as any), form, values);
-  });
+  return Object.entries((schema as any).shape).map(
+    ([fieldName, fieldSchema]) => {
+      return renderField(fieldName, fieldSchema as any, form, values);
+    }
+  );
 }
 function renderField<T extends z.ZodTypeAny>(
   fieldName: string,
   fieldSchema: T,
   form: UseFormReturn<z.infer<T>>,
-  values: Record<
-    string,
-    {
-      values:
-        | { value: string; label: string; disabled?: boolean }[]
-        | undefined;
-      loading: boolean;
-    }
-  > = {}
+  values: Record<string, extraFieldOptions> = {},
+  overrideDescription?: string // 1. Novo parâmetro opcional
 ) {
-  const description = fieldSchema.description || fieldName;
+  const description =
+    overrideDescription || fieldSchema.description || fieldName;
   const typeName = fieldSchema._def.typeName;
 
   const fieldValues = values[fieldName];
@@ -59,6 +53,7 @@ function renderField<T extends z.ZodTypeAny>(
   }
 
   const v = fieldValues?.values;
+  // const type = fieldValues?.type;
 
   switch (typeName) {
     case z.ZodFirstPartyTypeKind.ZodString:
@@ -110,14 +105,14 @@ function renderField<T extends z.ZodTypeAny>(
                   id={field.name}
                   onChange={(e) => {
                     const value =
-                      typeName === 'ZodNumber'
+                      typeName === "ZodNumber"
                         ? e.target.valueAsNumber
                         : e.target.value;
                     field.onChange(value);
                   }}
                   placeholder={description}
-                  type={typeName === 'ZodNumber' ? 'number' : 'text'}
-                  value={field.value || ''}
+                  type={typeName === "ZodNumber" ? "number" : "text"}
+                  value={field.value || ""}
                 />
               </FormControl>
               <FormMessage />
@@ -225,7 +220,7 @@ function renderField<T extends z.ZodTypeAny>(
                   value={
                     field.value
                       ? new Date(field.value).toISOString().substring(0, 10)
-                      : ''
+                      : ""
                   }
                 />
               </FormControl>
@@ -240,7 +235,8 @@ function renderField<T extends z.ZodTypeAny>(
         fieldName,
         (fieldSchema as unknown as z.ZodOptional<z.ZodTypeAny>).unwrap(),
         form,
-        values
+        values,
+        description
       );
     case z.ZodFirstPartyTypeKind.ZodUnion:
       {
@@ -249,7 +245,7 @@ function renderField<T extends z.ZodTypeAny>(
         )._def.options;
 
         // Se for uma união de literais, renderiza um select
-        if (options.every((opt) => opt._def.typeName === 'ZodLiteral')) {
+        if (options.every((opt) => opt._def.typeName === "ZodLiteral")) {
           const opts = options.map(
             (opt) => (opt as z.ZodLiteral<any>)._def.value
           );
@@ -287,7 +283,8 @@ function renderField<T extends z.ZodTypeAny>(
         (fieldSchema as unknown as z.ZodUnion<[z.ZodTypeAny, z.ZodTypeAny]>)
           ._def.options[0],
         form,
-        values
+        values,
+        description
       );
     default:
       return (
