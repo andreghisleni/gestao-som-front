@@ -4,35 +4,35 @@
 */
 
 import fetch from "@/lib/api";
-import type { CreateEquipmentMutationRequest, CreateEquipmentMutationResponse } from "../types/CreateEquipment.ts";
+import type { CreateEquipmentMutationRequest, CreateEquipmentMutationResponse, CreateEquipment404 } from "../types/CreateEquipment.ts";
 import type { RequestConfig, ResponseErrorConfig } from "@/lib/api";
 import type { UseMutationOptions, QueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 
-export const createEquipmentMutationKey = () => [{ url: '/rental/equipment/' }] as const
+export const createEquipmentMutationKey = () => [{ url: '/rental/equipments/' }] as const
 
 export type CreateEquipmentMutationKey = ReturnType<typeof createEquipmentMutationKey>
 
 /**
- * @summary Create a new equipment
- * {@link /rental/equipment/}
+ * @summary Create a new equipment with auto-calculated rental price
+ * {@link /rental/equipments/}
  */
 export async function createEquipment(data: CreateEquipmentMutationRequest, config: Partial<RequestConfig<CreateEquipmentMutationRequest>> & { client?: typeof fetch } = {}) {
   const { client: request = fetch, ...requestConfig } = config  
   
   const requestData = data  
   
-  const res = await request<CreateEquipmentMutationResponse, ResponseErrorConfig<Error>, CreateEquipmentMutationRequest>({ method : "POST", url : `/rental/equipment/`, data : requestData, ... requestConfig })  
+  const res = await request<CreateEquipmentMutationResponse, ResponseErrorConfig<CreateEquipment404>, CreateEquipmentMutationRequest>({ method : "POST", url : `/rental/equipments/`, data : requestData, ... requestConfig })  
   return res.data
 }
 
 /**
- * @summary Create a new equipment
- * {@link /rental/equipment/}
+ * @summary Create a new equipment with auto-calculated rental price
+ * {@link /rental/equipments/}
  */
 export function useCreateEquipment<TContext>(options: 
 {
-  mutation?: UseMutationOptions<CreateEquipmentMutationResponse, ResponseErrorConfig<Error>, {data: CreateEquipmentMutationRequest}, TContext> & { client?: QueryClient },
+  mutation?: UseMutationOptions<CreateEquipmentMutationResponse, ResponseErrorConfig<CreateEquipment404>, {data: CreateEquipmentMutationRequest}, TContext> & { client?: QueryClient },
   client?: Partial<RequestConfig<CreateEquipmentMutationRequest>> & { client?: typeof fetch },
 }
  = {}) {
@@ -40,7 +40,7 @@ export function useCreateEquipment<TContext>(options:
   const { client: queryClient, ...mutationOptions } = mutation;
   const mutationKey = mutationOptions.mutationKey ?? createEquipmentMutationKey()
 
-  return useMutation<CreateEquipmentMutationResponse, ResponseErrorConfig<Error>, {data: CreateEquipmentMutationRequest}, TContext>({
+  return useMutation<CreateEquipmentMutationResponse, ResponseErrorConfig<CreateEquipment404>, {data: CreateEquipmentMutationRequest}, TContext>({
     mutationFn: async({ data }) => {
       return createEquipment(data, config)
     },

@@ -14,7 +14,7 @@ export const getBudgetsQueryKey = (params?: GetBudgetsQueryParams) => [{ url: '/
 export type GetBudgetsQueryKey = ReturnType<typeof getBudgetsQueryKey>
 
 /**
- * @summary Get all budgets
+ * @summary Get all rental budgets
  * {@link /rental/budgets/}
  */
 export async function getBudgets(params?: GetBudgetsQueryParams, config: Partial<RequestConfig> & { client?: typeof fetch } = {}) {
@@ -37,7 +37,7 @@ export function getBudgetsQueryOptions(params?: GetBudgetsQueryParams, config: P
 }
 
 /**
- * @summary Get all budgets
+ * @summary Get all rental budgets
  * {@link /rental/budgets/}
  */
 export function useGetBudgets<TData = GetBudgetsQueryResponse, TQueryData = GetBudgetsQueryResponse, TQueryKey extends QueryKey = GetBudgetsQueryKey>(params?: GetBudgetsQueryParams, options: 

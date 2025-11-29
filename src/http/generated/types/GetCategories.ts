@@ -4,9 +4,9 @@
 */
 
 
-export type GetBudgetsQueryParams = {
+export type GetCategoriesQueryParams = {
     /**
-     * @description Filter by client name or status
+     * @description Filter by category name
      * @type string | undefined
     */
     "f.filter"?: string;
@@ -20,14 +20,21 @@ export type GetBudgetsQueryParams = {
      * @type number | undefined
     */
     "p.pageSize"?: number;
-    "ob.clientName"?: (string | string);
-    "ob.eventDate"?: (string | string);
-    "ob.status"?: (string | string);
-    "ob.finalValue"?: (string | string);
+    /**
+     * @description Type of the order
+    */
+    "ob.name"?: (string | string);
+    /**
+     * @description Type of the order
+    */
+    "ob.rentalPercent"?: (string | string);
+    /**
+     * @description Type of the order
+    */
     "ob.createdAt"?: (string | string);
 };
 
-export type GetBudgets200 = {
+export type GetCategories200 = {
     /**
      * @type array
     */
@@ -39,46 +46,21 @@ export type GetBudgets200 = {
         /**
          * @type string
         */
-        clientName: string;
-        eventDate: (string | string | number);
-        /**
-         * @type string
-        */
-        status: string;
+        name: string;
         /**
          * @type number
         */
-        totalValue: number;
-        /**
-         * @type number
-        */
-        discount: number;
-        /**
-         * @type number
-        */
-        finalValue: number;
-        /**
-         * @type number
-        */
-        laborCost: number;
-        /**
-         * @type number
-        */
-        transportCost: number;
+        rentalPercent: number;
         createdAt: (string | string | number);
         updatedAt: (string | string | number);
         /**
-         * @type object
+         * @type object | undefined
         */
-        user: {
+        _count?: {
             /**
-             * @type string
+             * @type number
             */
-            id: string;
-            /**
-             * @type string
-            */
-            name: string;
+            equipments: number;
         };
     }[];
     /**
@@ -104,10 +86,10 @@ export type GetBudgets200 = {
     };
 };
 
-export type GetBudgetsQueryResponse = GetBudgets200;
+export type GetCategoriesQueryResponse = GetCategories200;
 
-export type GetBudgetsQuery = {
-    Response: GetBudgets200;
-    QueryParams: GetBudgetsQueryParams;
+export type GetCategoriesQuery = {
+    Response: GetCategories200;
+    QueryParams: GetCategoriesQueryParams;
     Errors: any;
 };

@@ -4,35 +4,35 @@
 */
 
 import fetch from "@/lib/api";
-import type { UpdateEquipmentMutationRequest, UpdateEquipmentMutationResponse, UpdateEquipmentPathParams } from "../types/UpdateEquipment.ts";
+import type { UpdateEquipmentMutationRequest, UpdateEquipmentMutationResponse, UpdateEquipmentPathParams, UpdateEquipment400, UpdateEquipment404 } from "../types/UpdateEquipment.ts";
 import type { RequestConfig, ResponseErrorConfig } from "@/lib/api";
 import type { UseMutationOptions, QueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 
-export const updateEquipmentMutationKey = () => [{ url: '/rental/equipment/:id' }] as const
+export const updateEquipmentMutationKey = () => [{ url: '/rental/equipments/:id' }] as const
 
 export type UpdateEquipmentMutationKey = ReturnType<typeof updateEquipmentMutationKey>
 
 /**
- * @summary Update an existing equipment
- * {@link /rental/equipment/:id}
+ * @summary Update equipment (recalculates rental price if needed)
+ * {@link /rental/equipments/:id}
  */
 export async function updateEquipment(id: UpdateEquipmentPathParams["id"], data?: UpdateEquipmentMutationRequest, config: Partial<RequestConfig<UpdateEquipmentMutationRequest>> & { client?: typeof fetch } = {}) {
   const { client: request = fetch, ...requestConfig } = config  
   
   const requestData = data  
   
-  const res = await request<UpdateEquipmentMutationResponse, ResponseErrorConfig<Error>, UpdateEquipmentMutationRequest>({ method : "PUT", url : `/rental/equipment/${id}`, data : requestData, ... requestConfig })  
+  const res = await request<UpdateEquipmentMutationResponse, ResponseErrorConfig<UpdateEquipment400 | UpdateEquipment404>, UpdateEquipmentMutationRequest>({ method : "PUT", url : `/rental/equipments/${id}`, data : requestData, ... requestConfig })  
   return res.data
 }
 
 /**
- * @summary Update an existing equipment
- * {@link /rental/equipment/:id}
+ * @summary Update equipment (recalculates rental price if needed)
+ * {@link /rental/equipments/:id}
  */
 export function useUpdateEquipment<TContext>(options: 
 {
-  mutation?: UseMutationOptions<UpdateEquipmentMutationResponse, ResponseErrorConfig<Error>, {id: UpdateEquipmentPathParams["id"], data?: UpdateEquipmentMutationRequest}, TContext> & { client?: QueryClient },
+  mutation?: UseMutationOptions<UpdateEquipmentMutationResponse, ResponseErrorConfig<UpdateEquipment400 | UpdateEquipment404>, {id: UpdateEquipmentPathParams["id"], data?: UpdateEquipmentMutationRequest}, TContext> & { client?: QueryClient },
   client?: Partial<RequestConfig<UpdateEquipmentMutationRequest>> & { client?: typeof fetch },
 }
  = {}) {
@@ -40,7 +40,7 @@ export function useUpdateEquipment<TContext>(options:
   const { client: queryClient, ...mutationOptions } = mutation;
   const mutationKey = mutationOptions.mutationKey ?? updateEquipmentMutationKey()
 
-  return useMutation<UpdateEquipmentMutationResponse, ResponseErrorConfig<Error>, {id: UpdateEquipmentPathParams["id"], data?: UpdateEquipmentMutationRequest}, TContext>({
+  return useMutation<UpdateEquipmentMutationResponse, ResponseErrorConfig<UpdateEquipment400 | UpdateEquipment404>, {id: UpdateEquipmentPathParams["id"], data?: UpdateEquipmentMutationRequest}, TContext>({
     mutationFn: async({ id, data }) => {
       return updateEquipment(id, data, config)
     },

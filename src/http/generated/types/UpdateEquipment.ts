@@ -6,49 +6,49 @@
 
 export type UpdateEquipmentPathParams = {
     /**
-     * @description Equipment ID
-     * @type string
+     * @type string, uuid
     */
     id: string;
 };
 
 /**
- * @description Response after updating equipment
+ * @description Equipment updated successfully
 */
-export type UpdateEquipment201 = {
+export type UpdateEquipment201 = any;
+
+export type UpdateEquipment400 = {
     /**
-     * @description Success message
      * @type string
     */
-    message: string;
+    error: string;
+};
+
+export type UpdateEquipment404 = {
+    /**
+     * @type string
+    */
+    error: string;
 };
 
 export type UpdateEquipmentMutationRequest = {
     /**
-     * @description Equipment name
      * @type string | undefined
     */
     name?: string;
     /**
-     * @description Equipment category
-     * @type string | undefined
+     * @type string | undefined, uuid
     */
-    category?: string;
+    categoryId?: string;
     /**
-     * @description Purchase price as number
+     * @minLength 0
      * @type number | undefined
     */
     purchasePrice?: number;
     /**
-     * @description Rental percentage
+     * @minLength 0
      * @type number | undefined
     */
-    rentalPercentage?: number;
-    /**
-     * @description Total stock available
-     * @type number | undefined
-    */
-    stockTotal?: number;
+    stockQuantity?: number;
 };
 
 export type UpdateEquipmentMutationResponse = UpdateEquipment201;
@@ -57,5 +57,5 @@ export type UpdateEquipmentMutation = {
     Response: UpdateEquipment201;
     Request: UpdateEquipmentMutationRequest;
     PathParams: UpdateEquipmentPathParams;
-    Errors: any;
+    Errors: UpdateEquipment400 | UpdateEquipment404;
 };

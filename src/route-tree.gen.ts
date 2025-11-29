@@ -19,7 +19,11 @@ import { Route as AppSettingsRouteImport } from './pages/_app/settings'
 import { Route as AppDashboardRouteImport } from './pages/_app/dashboard'
 import { Route as AppInventoryIndexRouteImport } from './pages/_app/inventory/index'
 import { Route as AuthResetPasswordTokenRouteImport } from './pages/_auth/reset-password.$token'
+import { Route as AppRentalEquipmentIndexRouteImport } from './pages/_app/rental/equipment/index'
+import { Route as AppRentalCategoriesIndexRouteImport } from './pages/_app/rental/categories/index'
+import { Route as AppRentalBudgetsIndexRouteImport } from './pages/_app/rental/budgets/index'
 import { Route as AppBudgetsBudgetIdIndexRouteImport } from './pages/_app/budgets/$budgetId/index'
+import { Route as AppRentalBudgetsCreateRouteImport } from './pages/_app/rental/budgets/create'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_auth',
@@ -69,9 +73,30 @@ const AuthResetPasswordTokenRoute = AuthResetPasswordTokenRouteImport.update({
   path: '/reset-password/$token',
   getParentRoute: () => AuthLayoutRoute,
 } as any)
+const AppRentalEquipmentIndexRoute = AppRentalEquipmentIndexRouteImport.update({
+  id: '/rental/equipment/',
+  path: '/rental/equipment/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppRentalCategoriesIndexRoute =
+  AppRentalCategoriesIndexRouteImport.update({
+    id: '/rental/categories/',
+    path: '/rental/categories/',
+    getParentRoute: () => AppLayoutRoute,
+  } as any)
+const AppRentalBudgetsIndexRoute = AppRentalBudgetsIndexRouteImport.update({
+  id: '/rental/budgets/',
+  path: '/rental/budgets/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
 const AppBudgetsBudgetIdIndexRoute = AppBudgetsBudgetIdIndexRouteImport.update({
   id: '/budgets/$budgetId/',
   path: '/budgets/$budgetId/',
+  getParentRoute: () => AppLayoutRoute,
+} as any)
+const AppRentalBudgetsCreateRoute = AppRentalBudgetsCreateRouteImport.update({
+  id: '/rental/budgets/create',
+  path: '/rental/budgets/create',
   getParentRoute: () => AppLayoutRoute,
 } as any)
 
@@ -84,7 +109,11 @@ export interface FileRoutesByFullPath {
   '/sign-up': typeof AuthSignUpRoute
   '/reset-password/$token': typeof AuthResetPasswordTokenRoute
   '/inventory': typeof AppInventoryIndexRoute
+  '/rental/budgets/create': typeof AppRentalBudgetsCreateRoute
   '/budgets/$budgetId': typeof AppBudgetsBudgetIdIndexRoute
+  '/rental/budgets': typeof AppRentalBudgetsIndexRoute
+  '/rental/categories': typeof AppRentalCategoriesIndexRoute
+  '/rental/equipment': typeof AppRentalEquipmentIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -95,7 +124,11 @@ export interface FileRoutesByTo {
   '/sign-up': typeof AuthSignUpRoute
   '/reset-password/$token': typeof AuthResetPasswordTokenRoute
   '/inventory': typeof AppInventoryIndexRoute
+  '/rental/budgets/create': typeof AppRentalBudgetsCreateRoute
   '/budgets/$budgetId': typeof AppBudgetsBudgetIdIndexRoute
+  '/rental/budgets': typeof AppRentalBudgetsIndexRoute
+  '/rental/categories': typeof AppRentalCategoriesIndexRoute
+  '/rental/equipment': typeof AppRentalEquipmentIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -109,7 +142,11 @@ export interface FileRoutesById {
   '/_auth/sign-up': typeof AuthSignUpRoute
   '/_auth/reset-password/$token': typeof AuthResetPasswordTokenRoute
   '/_app/inventory/': typeof AppInventoryIndexRoute
+  '/_app/rental/budgets/create': typeof AppRentalBudgetsCreateRoute
   '/_app/budgets/$budgetId/': typeof AppBudgetsBudgetIdIndexRoute
+  '/_app/rental/budgets/': typeof AppRentalBudgetsIndexRoute
+  '/_app/rental/categories/': typeof AppRentalCategoriesIndexRoute
+  '/_app/rental/equipment/': typeof AppRentalEquipmentIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -122,7 +159,11 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/reset-password/$token'
     | '/inventory'
+    | '/rental/budgets/create'
     | '/budgets/$budgetId'
+    | '/rental/budgets'
+    | '/rental/categories'
+    | '/rental/equipment'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,7 +174,11 @@ export interface FileRouteTypes {
     | '/sign-up'
     | '/reset-password/$token'
     | '/inventory'
+    | '/rental/budgets/create'
     | '/budgets/$budgetId'
+    | '/rental/budgets'
+    | '/rental/categories'
+    | '/rental/equipment'
   id:
     | '__root__'
     | '/'
@@ -146,7 +191,11 @@ export interface FileRouteTypes {
     | '/_auth/sign-up'
     | '/_auth/reset-password/$token'
     | '/_app/inventory/'
+    | '/_app/rental/budgets/create'
     | '/_app/budgets/$budgetId/'
+    | '/_app/rental/budgets/'
+    | '/_app/rental/categories/'
+    | '/_app/rental/equipment/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -227,11 +276,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthResetPasswordTokenRouteImport
       parentRoute: typeof AuthLayoutRoute
     }
+    '/_app/rental/equipment/': {
+      id: '/_app/rental/equipment/'
+      path: '/rental/equipment'
+      fullPath: '/rental/equipment'
+      preLoaderRoute: typeof AppRentalEquipmentIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/rental/categories/': {
+      id: '/_app/rental/categories/'
+      path: '/rental/categories'
+      fullPath: '/rental/categories'
+      preLoaderRoute: typeof AppRentalCategoriesIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/rental/budgets/': {
+      id: '/_app/rental/budgets/'
+      path: '/rental/budgets'
+      fullPath: '/rental/budgets'
+      preLoaderRoute: typeof AppRentalBudgetsIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
     '/_app/budgets/$budgetId/': {
       id: '/_app/budgets/$budgetId/'
       path: '/budgets/$budgetId'
       fullPath: '/budgets/$budgetId'
       preLoaderRoute: typeof AppBudgetsBudgetIdIndexRouteImport
+      parentRoute: typeof AppLayoutRoute
+    }
+    '/_app/rental/budgets/create': {
+      id: '/_app/rental/budgets/create'
+      path: '/rental/budgets/create'
+      fullPath: '/rental/budgets/create'
+      preLoaderRoute: typeof AppRentalBudgetsCreateRouteImport
       parentRoute: typeof AppLayoutRoute
     }
   }
@@ -241,14 +318,22 @@ interface AppLayoutRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppSettingsRoute: typeof AppSettingsRoute
   AppInventoryIndexRoute: typeof AppInventoryIndexRoute
+  AppRentalBudgetsCreateRoute: typeof AppRentalBudgetsCreateRoute
   AppBudgetsBudgetIdIndexRoute: typeof AppBudgetsBudgetIdIndexRoute
+  AppRentalBudgetsIndexRoute: typeof AppRentalBudgetsIndexRoute
+  AppRentalCategoriesIndexRoute: typeof AppRentalCategoriesIndexRoute
+  AppRentalEquipmentIndexRoute: typeof AppRentalEquipmentIndexRoute
 }
 
 const AppLayoutRouteChildren: AppLayoutRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppSettingsRoute: AppSettingsRoute,
   AppInventoryIndexRoute: AppInventoryIndexRoute,
+  AppRentalBudgetsCreateRoute: AppRentalBudgetsCreateRoute,
   AppBudgetsBudgetIdIndexRoute: AppBudgetsBudgetIdIndexRoute,
+  AppRentalBudgetsIndexRoute: AppRentalBudgetsIndexRoute,
+  AppRentalCategoriesIndexRoute: AppRentalCategoriesIndexRoute,
+  AppRentalEquipmentIndexRoute: AppRentalEquipmentIndexRoute,
 }
 
 const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(

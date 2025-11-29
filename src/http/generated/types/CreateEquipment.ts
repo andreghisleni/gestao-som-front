@@ -5,48 +5,42 @@
 
 
 /**
- * @description Response containing the ID of the created equipment
+ * @description Equipment created successfully
 */
-export type CreateEquipment200 = {
+export type CreateEquipment201 = any;
+
+export type CreateEquipment404 = {
     /**
-     * @description Created equipment ID
      * @type string
     */
-    id: string;
+    error: string;
 };
 
 export type CreateEquipmentMutationRequest = {
     /**
-     * @description Equipment name
      * @type string
     */
     name: string;
     /**
-     * @description Equipment category
-     * @type string
+     * @type string, uuid
     */
-    category: string;
+    categoryId: string;
     /**
-     * @description Purchase price as number
+     * @minLength 0
      * @type number
     */
     purchasePrice: number;
     /**
-     * @description Rental percent
+     * @minLength 0
      * @type number
     */
-    rentalPercentage: number;
-    /**
-     * @description Total stock available for rental
-     * @type number | undefined
-    */
-    stockTotal?: number;
+    stockQuantity: number;
 };
 
-export type CreateEquipmentMutationResponse = CreateEquipment200;
+export type CreateEquipmentMutationResponse = CreateEquipment201;
 
 export type CreateEquipmentMutation = {
-    Response: CreateEquipment200;
+    Response: CreateEquipment201;
     Request: CreateEquipmentMutationRequest;
-    Errors: any;
+    Errors: CreateEquipment404;
 };

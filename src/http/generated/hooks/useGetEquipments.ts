@@ -9,18 +9,18 @@ import type { RequestConfig, ResponseErrorConfig } from "@/lib/api";
 import type { QueryKey, QueryClient, QueryObserverOptions, UseQueryResult } from "@tanstack/react-query";
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-export const getEquipmentsQueryKey = (params?: GetEquipmentsQueryParams) => [{ url: '/rental/equipment/' }, ...(params ? [params] : [])] as const
+export const getEquipmentsQueryKey = (params?: GetEquipmentsQueryParams) => [{ url: '/rental/equipments/' }, ...(params ? [params] : [])] as const
 
 export type GetEquipmentsQueryKey = ReturnType<typeof getEquipmentsQueryKey>
 
 /**
- * @summary Get all equipments
- * {@link /rental/equipment/}
+ * @summary Get all equipment in inventory
+ * {@link /rental/equipments/}
  */
 export async function getEquipments(params?: GetEquipmentsQueryParams, config: Partial<RequestConfig> & { client?: typeof fetch } = {}) {
   const { client: request = fetch, ...requestConfig } = config  
   
-  const res = await request<GetEquipmentsQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : "GET", url : `/rental/equipment/`, params, ... requestConfig })  
+  const res = await request<GetEquipmentsQueryResponse, ResponseErrorConfig<Error>, unknown>({ method : "GET", url : `/rental/equipments/`, params, ... requestConfig })  
   return res.data
 }
 
@@ -37,8 +37,8 @@ export function getEquipmentsQueryOptions(params?: GetEquipmentsQueryParams, con
 }
 
 /**
- * @summary Get all equipments
- * {@link /rental/equipment/}
+ * @summary Get all equipment in inventory
+ * {@link /rental/equipments/}
  */
 export function useGetEquipments<TData = GetEquipmentsQueryResponse, TQueryData = GetEquipmentsQueryResponse, TQueryKey extends QueryKey = GetEquipmentsQueryKey>(params?: GetEquipmentsQueryParams, options: 
 {

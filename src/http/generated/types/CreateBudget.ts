@@ -5,25 +5,13 @@
 
 
 /**
- * @description Response containing the ID of the created budget
+ * @description Budget ID returned
 */
 export type CreateBudget201 = {
     /**
-     * @description Created budget ID
      * @type string
     */
     id: string;
-};
-
-/**
- * @description Error response
-*/
-export type CreateBudget400 = {
-    /**
-     * @description Error message
-     * @type string
-    */
-    error: string;
 };
 
 export type CreateBudgetMutationRequest = {
@@ -33,35 +21,9 @@ export type CreateBudgetMutationRequest = {
     */
     clientName: string;
     /**
-     * @description Date of the event for the budget
-     * @type string
+     * @description Date of the event
     */
-    eventDate: string;
-    /**
-     * @type array | undefined
-    */
-    sections?: {
-        /**
-         * @description Name of the budget section
-         * @type string
-        */
-        name: string;
-        /**
-         * @type array
-        */
-        items: {
-            /**
-             * @description ID of the equipment
-             * @type string
-            */
-            equipmentId: string;
-            /**
-             * @description Quantity of the equipment
-             * @type number
-            */
-            quantity: number;
-        }[];
-    }[];
+    eventDate: (string | string | number);
 };
 
 export type CreateBudgetMutationResponse = CreateBudget201;
@@ -69,5 +31,5 @@ export type CreateBudgetMutationResponse = CreateBudget201;
 export type CreateBudgetMutation = {
     Response: CreateBudget201;
     Request: CreateBudgetMutationRequest;
-    Errors: CreateBudget400;
+    Errors: any;
 };

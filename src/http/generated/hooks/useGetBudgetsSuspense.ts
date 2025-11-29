@@ -14,7 +14,7 @@ export const getBudgetsSuspenseQueryKey = (params?: GetBudgetsQueryParams) => [{
 export type GetBudgetsSuspenseQueryKey = ReturnType<typeof getBudgetsSuspenseQueryKey>
 
 /**
- * @summary Get all budgets
+ * @summary Get all rental budgets
  * {@link /rental/budgets/}
  */
 export async function getBudgetsSuspense(params?: GetBudgetsQueryParams, config: Partial<RequestConfig> & { client?: typeof fetch } = {}) {
@@ -37,7 +37,7 @@ export function getBudgetsSuspenseQueryOptions(params?: GetBudgetsQueryParams, c
 }
 
 /**
- * @summary Get all budgets
+ * @summary Get all rental budgets
  * {@link /rental/budgets/}
  */
 export function useGetBudgetsSuspense<TData = GetBudgetsQueryResponse, TQueryKey extends QueryKey = GetBudgetsSuspenseQueryKey>(params?: GetBudgetsQueryParams, options: 

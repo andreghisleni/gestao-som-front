@@ -1,16 +1,15 @@
-import { Link, useNavigate, useParams } from '@tanstack/react-router';
+import { useNavigate } from "@tanstack/react-router";
 
 import {
-  BoltIcon,
   BookOpenIcon,
   Layers2Icon,
   LogOutIcon,
   PinIcon,
   UserPenIcon,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,21 +18,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { auth } from '@/lib/auth';
-import { getNameInitials } from '@/utils/get-name-initials';
+} from "@/components/ui/dropdown-menu";
+import { auth } from "@/lib/auth";
+import { getNameInitials } from "@/utils/get-name-initials";
 
 export default function UserMenu() {
-  const { eventId } = useParams({
-    strict: false,
-  });
+  // const { eventId } = useParams({
+  //   strict: false,
+  // });
 
   const navigate = useNavigate();
   const { data } = auth.useSession();
   async function handleLogout() {
     await auth.signOut();
     navigate({
-      to: '/sign-in',
+      to: "/sign-in",
       replace: true,
     });
   }
@@ -50,7 +49,7 @@ export default function UserMenu() {
       <DropdownMenuTrigger asChild>
         <Button className="h-auto p-0 hover:bg-transparent" variant="ghost">
           <Avatar>
-            <AvatarImage alt={user.name} src={user.image || ''} />
+            <AvatarImage alt={user.name} src={user.image || ""} />
             <AvatarFallback className="rounded-lg">{initials}</AvatarFallback>
           </Avatar>
         </Button>
@@ -66,12 +65,12 @@ export default function UserMenu() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          {eventId && (<DropdownMenuItem asChild>
+          {/* {eventId && (<DropdownMenuItem asChild>
             <Link params={{ eventId }} to={'/$eventId/event/edit'}>
               <BoltIcon aria-hidden="true" className="opacity-60" size={16} />
               <span>Evento</span>
             </Link>
-          </DropdownMenuItem>)}
+          </DropdownMenuItem>)} */}
           <DropdownMenuItem>
             <Layers2Icon aria-hidden="true" className="opacity-60" size={16} />
             <span>Option 2</span>

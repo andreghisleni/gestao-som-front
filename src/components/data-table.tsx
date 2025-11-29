@@ -1,8 +1,8 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-'use client';
+"use client";
 /** eslint @typescript-eslint/no-explicit-any: 0 */
 // biome-ignore lint/performance/noNamespaceImport: <explanation>
-import * as Portal from '@radix-ui/react-portal';
+import * as Portal from "@radix-ui/react-portal";
 import {
   type Column,
   type ColumnDef,
@@ -17,19 +17,19 @@ import {
   type Table as TableInstance,
   useReactTable,
   type VisibilityState,
-} from '@tanstack/react-table';
-import { ChevronDown, Expand, Shrink } from 'lucide-react';
-import React from 'react';
-import reactNodeToString from 'react-node-to-string';
+} from "@tanstack/react-table";
+import { ChevronDown, Expand, Shrink } from "lucide-react";
+import React from "react";
+import reactNodeToString from "react-node-to-string";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -37,11 +37,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { cn } from '@/lib/utils';
+} from "@/components/ui/table";
+import { cn } from "@/lib/utils";
 
-import { Checkbox } from './ui/checkbox';
-import { Skeleton } from './ui/skeleton';
+import { Checkbox } from "./ui/checkbox";
+import { Skeleton } from "./ui/skeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -76,11 +76,15 @@ interface DataTableProps<TData, TValue> {
 const getHeaderValue = (column: Column<unknown>): string => {
   const { header } = column.columnDef;
 
-  if (typeof header === 'string') {
+  if (!header) {
+    return column.id;
+  }
+
+  if (typeof header === "string") {
     return header;
   }
 
-  if (typeof header === 'function') {
+  if (typeof header === "function") {
     return reactNodeToString(header(column as any)); // eslint-disable-line @typescript-eslint/no-explicit-any
   }
 
@@ -90,15 +94,15 @@ const getHeaderValue = (column: Column<unknown>): string => {
 const select = ({
   actionDisabledFunction,
 }: {
-  actionDisabledFunction: DataTableProps<any, any>['actionDisabledFunction']; // eslint-disable-line
+  actionDisabledFunction: DataTableProps<any, any>["actionDisabledFunction"]; // eslint-disable-line
 }) => ({
-  id: 'select',
+  id: "select",
   header: ({ table }: { table: TableInstance<any> }) => (
     <Checkbox
       aria-label="Select all"
       checked={
         table.getIsAllPageRowsSelected() ||
-        (table.getIsSomePageRowsSelected() && 'indeterminate')
+        (table.getIsSomePageRowsSelected() && "indeterminate")
       }
       className="border-gray-950 disabled:border-gray-400 dark:border-gray-500"
       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
@@ -128,7 +132,7 @@ export function DataTable<TData, TValue>({
   pagination,
   addFunction,
   addComponent,
-  noDataMessage = 'No results.',
+  noDataMessage = "No results.",
   onRowSelectionChange,
   filterComponent,
   ifJustFilterComponent = false,
@@ -148,7 +152,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(initialColumnVisibility);
   const [rowSelection, setRowSelection] = React.useState({});
-  const [globalFilter, setGlobalFilter] = React.useState('');
+  const [globalFilter, setGlobalFilter] = React.useState("");
 
   const [isFullScreen, setIsFullScreen] = React.useState(false);
   const tabelaRef = React.useRef(null);
@@ -203,15 +207,15 @@ export function DataTable<TData, TValue>({
     <>
       <div
         className={cn(
-          'flex flex-1 flex-col overflow-x-hidden',
-          'relative overflow-x-auto',
+          "flex flex-1 flex-col overflow-x-hidden",
+          "relative overflow-x-auto",
           // 'data-[full-screen=true]:fixed data-[full-screen=true]:left-0 data-[full-screen=true]:top-0 data-[fullScreen=true]:z-50',
           // 'data-[full-screen=true]:h-screen data-[full-screen=true]:w-screen',
           // 'data-[full-screen=true]:p-8',
           // 'bg-white text-zinc-950 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-50',
-          'text-zinc-950 dark:border-zinc-800 dark:text-zinc-50'
+          "text-zinc-950 dark:border-zinc-800 dark:text-zinc-50"
         )}
-        data-full-screen={isFullScreen ? 'true' : 'false'}
+        data-full-screen={isFullScreen ? "true" : "false"}
         ref={tabelaRef}
       >
         <DateTableContent
@@ -240,7 +244,7 @@ export function DataTable<TData, TValue>({
         <Portal.Root
           className="pointer-events-auto fixed inset-0 isolation-auto z-500 overflow-y-auto bg-white p-8 dark:bg-zinc-950"
           style={{
-            pointerEvents: 'auto',
+            pointerEvents: "auto",
           }}
           tabIndex={-1}
         >
@@ -320,7 +324,7 @@ function DateTableContent({
               className="max-w-ssm"
               onChange={(event) => setGlobalFilter(event.target.value)}
               placeholder="Filter..."
-              value={globalFilter ?? ''}
+              value={globalFilter ?? ""}
             />
             {filterComponent && filterComponent}
           </div>
@@ -406,20 +410,20 @@ function DateTableContent({
           <TableBody>
             {loading ? (
               [1, 2, 3, 4, 5, 6, 7].map((i) => (
-                <TableRow className={cn('group')} key={i}>
+                <TableRow className={cn("group")} key={i}>
                   {table
                     .getVisibleFlatColumns()
                     .map((cell: { id: React.Key | null | undefined }) => (
                       <TableCell
                         className={cn(
                           // 'bg-white dark:bg-zinc-950',
-                          'group-hover:bg-zinc-100/50 dark:group-hover:bg-zinc-800/50'
+                          "group-hover:bg-zinc-100/50 dark:group-hover:bg-zinc-800/50"
 
                           // cell.column.columnDef.meta?.className,
                         )}
                         key={cell.id}
                       >
-                        {cell.id === 'actions' ? (
+                        {cell.id === "actions" ? (
                           <div className="flex gap-2">
                             <Skeleton className="h-10 w-[80px]" />
                             <Skeleton className="h-10 w-[80px]" />
@@ -431,8 +435,8 @@ function DateTableContent({
                     ))}
                 </TableRow>
               ))
-              // biome-ignore lint/style/noNestedTernary: <explanation>
-            ) : table.getRowModel().rows?.length ? (
+            ) : // biome-ignore lint/style/noNestedTernary: <explanation>
+            table.getRowModel().rows?.length ? (
               table
                 .getRowModel()
                 .rows.map(
@@ -443,8 +447,8 @@ function DateTableContent({
                     getVisibleCells: () => any[];
                   }) => (
                     <TableRow
-                      className={cn('group')}
-                      data-state={row.getIsSelected() ? 'selected' : undefined}
+                      className={cn("group")}
+                      data-state={row.getIsSelected() ? "selected" : undefined}
                       key={row.id}
                       onDoubleClick={() =>
                         row.toggleSelected(!row.getIsSelected())
@@ -454,9 +458,9 @@ function DateTableContent({
                         <TableCell
                           className={cn(
                             // 'bg-white dark:bg-zinc-950',
-                            'group-hover:bg-zinc-100/50 dark:group-hover:bg-zinc-800/50',
-                            'group-data-[state=selected]:bg-zinc-200 dark:group-data-[state=selected]:bg-zinc-800/50',
-                            'group-data-[state=selected]:group-hover:bg-blue-200/70 dark:group-data-[state=selected]:group-hover:bg-blue-800/40',
+                            "group-hover:bg-zinc-100/50 dark:group-hover:bg-zinc-800/50",
+                            "group-data-[state=selected]:bg-zinc-200 dark:group-data-[state=selected]:bg-zinc-800/50",
+                            "group-data-[state=selected]:group-hover:bg-blue-200/70 dark:group-data-[state=selected]:group-hover:bg-blue-800/40",
                             rowBgColor?.(row),
                             cell.column.columnDef.meta?.className
                           )}
@@ -504,9 +508,9 @@ function DateTableContent({
       <div className="flex items-center justify-end space-x-2 py-4">
         {!!table
           .getAllColumns()
-          .find((c: { id: string }) => c.id === 'select') && (
+          .find((c: { id: string }) => c.id === "select") && (
           <div className="flex-1 text-muted-foreground text-sm">
-            {table.getFilteredSelectedRowModel().rows.length} of{' '}
+            {table.getFilteredSelectedRowModel().rows.length} of{" "}
             {table.getFilteredRowModel().rows.length} row(s) selected.
           </div>
         )}

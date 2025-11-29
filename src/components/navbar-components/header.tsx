@@ -1,33 +1,31 @@
-import { Link } from '@tanstack/react-router';
-import InfoMenu from '@/components/navbar-components/info-menu';
-import Logo from '@/components/navbar-components/logo';
-import NotificationMenu from '@/components/navbar-components/notification-menu';
-import { ThemeSwitcher } from '@/components/navbar-components/theme-switcher';
-import UserMenu from '@/components/navbar-components/user-menu';
-import { Button } from '@/components/ui/button';
+import { Link } from "@tanstack/react-router";
+import InfoMenu from "@/components/navbar-components/info-menu";
+import Logo from "@/components/navbar-components/logo";
+import NotificationMenu from "@/components/navbar-components/notification-menu";
+import { ThemeSwitcher } from "@/components/navbar-components/theme-switcher";
+import UserMenu from "@/components/navbar-components/user-menu";
+import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-} from '@/components/ui/navigation-menu';
+} from "@/components/ui/navigation-menu";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
-import { EventSelect } from '../event-select';
-import { MenuLink } from './menu-link';
+} from "@/components/ui/popover";
+import { MenuLink } from "./menu-link";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: '/dashboard', label: 'Dashboard' },
-  { href: '/inventory', label: 'Inventário' },
-  { href: '/budgets', label: 'Orçamentos' },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/rental/categories", label: "Categorias" },
+  { href: "/rental/equipment", label: "Equipamentos" },
+  { href: "/rental/budgets", label: "Orçamentos" },
 ];
 
 export function Header() {
-
-
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -83,7 +81,6 @@ export function Header() {
                       </MenuLink>
                     </NavigationMenuItem>
                   ))}
-
                 </NavigationMenuList>
               </NavigationMenu>
             </PopoverContent>
@@ -96,7 +93,6 @@ export function Header() {
             >
               <Logo />
             </Link>
-            <EventSelect />
             {/* Navigation menu */}
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
@@ -110,7 +106,6 @@ export function Header() {
                     </MenuLink>
                   </NavigationMenuItem>
                 ))}
-
               </NavigationMenuList>
             </NavigationMenu>
           </div>

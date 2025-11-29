@@ -6,92 +6,96 @@
 
 export type GetEquipmentsQueryParams = {
     /**
-     * @description Filter to search equipment by name or category
+     * @description Filter by equipment name or category name
      * @type string | undefined
     */
     "f.filter"?: string;
     /**
-     * @description Page number for pagination
+     * @description Filter by category ID
+     * @type string | undefined
+    */
+    "f.categoryId"?: string;
+    /**
      * @default 1
      * @type number | undefined
     */
     "p.page"?: number;
     /**
-     * @description Number of items per page
      * @default 20
      * @type number | undefined
     */
     "p.pageSize"?: number;
-    /**
-     * @description Order by name
-    */
     "ob.name"?: (string | string);
-    /**
-     * @description Order by category
-    */
-    "ob.category"?: (string | string);
-    /**
-     * @description Order by purchase price
-    */
     "ob.purchasePrice"?: (string | string);
+    "ob.rentalPrice"?: (string | string);
+    "ob.stockQuantity"?: (string | string);
+    "ob.categoryName"?: (string | string);
+    "ob.createdAt"?: (string | string);
 };
 
-/**
- * @description Response containing the list of equipments and pagination metadata
-*/
 export type GetEquipments200 = {
     /**
      * @type array
     */
     data: {
         /**
-         * @description Equipment ID
          * @type string
         */
         id: string;
         /**
-         * @description Equipment name
          * @type string
         */
         name: string;
         /**
-         * @description Equipment category
          * @type string
         */
-        category: string;
+        categoryId: string;
         /**
-         * @description Purchase price of the equipment
+         * @type object
+        */
+        category: {
+            /**
+             * @type string
+            */
+            id: string;
+            /**
+             * @type string
+            */
+            name: string;
+            /**
+             * @type number
+            */
+            rentalPercent: number;
+        };
+        /**
          * @type number
         */
         purchasePrice: number;
+        rentalPrice: (number | null) | null;
         /**
-         * @description Total stock available for rental
          * @type number
         */
-        stockTotal: number;
+        stockQuantity: number;
+        createdAt: (string | string | number);
+        updatedAt: (string | string | number);
     }[];
     /**
-     * @description Metadata about the pagination
      * @type object
     */
     meta: {
         /**
-         * @description Total number of equipments matching the query
          * @type number
         */
         total: number;
         /**
-         * @description Current page number
          * @type number
         */
         page: number;
         /**
-         * @description Number of equipments per page
          * @type number
         */
         pageSize: number;
         /**
-         * @description Total number of pages available
          * @type number
         */
         totalPages: number;

@@ -4,7 +4,7 @@
 */
 
 import fetch from "@/lib/api";
-import type { CreateBudgetMutationRequest, CreateBudgetMutationResponse, CreateBudget400 } from "../types/CreateBudget.ts";
+import type { CreateBudgetMutationRequest, CreateBudgetMutationResponse } from "../types/CreateBudget.ts";
 import type { RequestConfig, ResponseErrorConfig } from "@/lib/api";
 import type { UseMutationOptions, QueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
@@ -14,7 +14,7 @@ export const createBudgetMutationKey = () => [{ url: '/rental/budgets/' }] as co
 export type CreateBudgetMutationKey = ReturnType<typeof createBudgetMutationKey>
 
 /**
- * @summary Create a new budget
+ * @summary Create a new budget header
  * {@link /rental/budgets/}
  */
 export async function createBudget(data: CreateBudgetMutationRequest, config: Partial<RequestConfig<CreateBudgetMutationRequest>> & { client?: typeof fetch } = {}) {
@@ -22,17 +22,17 @@ export async function createBudget(data: CreateBudgetMutationRequest, config: Pa
   
   const requestData = data  
   
-  const res = await request<CreateBudgetMutationResponse, ResponseErrorConfig<CreateBudget400>, CreateBudgetMutationRequest>({ method : "POST", url : `/rental/budgets/`, data : requestData, ... requestConfig })  
+  const res = await request<CreateBudgetMutationResponse, ResponseErrorConfig<Error>, CreateBudgetMutationRequest>({ method : "POST", url : `/rental/budgets/`, data : requestData, ... requestConfig })  
   return res.data
 }
 
 /**
- * @summary Create a new budget
+ * @summary Create a new budget header
  * {@link /rental/budgets/}
  */
 export function useCreateBudget<TContext>(options: 
 {
-  mutation?: UseMutationOptions<CreateBudgetMutationResponse, ResponseErrorConfig<CreateBudget400>, {data: CreateBudgetMutationRequest}, TContext> & { client?: QueryClient },
+  mutation?: UseMutationOptions<CreateBudgetMutationResponse, ResponseErrorConfig<Error>, {data: CreateBudgetMutationRequest}, TContext> & { client?: QueryClient },
   client?: Partial<RequestConfig<CreateBudgetMutationRequest>> & { client?: typeof fetch },
 }
  = {}) {
@@ -40,7 +40,7 @@ export function useCreateBudget<TContext>(options:
   const { client: queryClient, ...mutationOptions } = mutation;
   const mutationKey = mutationOptions.mutationKey ?? createBudgetMutationKey()
 
-  return useMutation<CreateBudgetMutationResponse, ResponseErrorConfig<CreateBudget400>, {data: CreateBudgetMutationRequest}, TContext>({
+  return useMutation<CreateBudgetMutationResponse, ResponseErrorConfig<Error>, {data: CreateBudgetMutationRequest}, TContext>({
     mutationFn: async({ data }) => {
       return createBudget(data, config)
     },
