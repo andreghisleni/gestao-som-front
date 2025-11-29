@@ -1,8 +1,11 @@
+export type { CloneBudgetPathParams, CloneBudget201, CloneBudget404, CloneBudget500, CloneBudgetMutationRequest, CloneBudgetMutationResponse, CloneBudgetMutation } from "./CloneBudget.ts";
 export type { CreateBudget201, CreateBudgetMutationRequest, CreateBudgetMutationResponse, CreateBudgetMutation } from "./CreateBudget.ts";
 export type { CreateBudgetItemPathParams, CreateBudgetItem201, CreateBudgetItem404, CreateBudgetItemMutationRequest, CreateBudgetItemMutationResponse, CreateBudgetItemMutation } from "./CreateBudgetItem.ts";
 export type { CreateBudgetSectionPathParams, CreateBudgetSection201, CreateBudgetSection404, CreateBudgetSectionMutationRequest, CreateBudgetSectionMutationResponse, CreateBudgetSectionMutation } from "./CreateBudgetSection.ts";
 export type { CreateCategory201, CreateCategory409, CreateCategoryMutationRequest, CreateCategoryMutationResponse, CreateCategoryMutation } from "./CreateCategory.ts";
 export type { CreateEquipment201, CreateEquipment404, CreateEquipmentMutationRequest, CreateEquipmentMutationResponse, CreateEquipmentMutation } from "./CreateEquipment.ts";
+export type { DeleteBudgetItemByIdPathParams, DeleteBudgetItemById204, DeleteBudgetItemById400, DeleteBudgetItemById404, DeleteBudgetItemByIdMutationResponse, DeleteBudgetItemByIdMutation } from "./DeleteBudgetItemById.ts";
+export type { DeleteBudgetSectionByIdPathParams, DeleteBudgetSectionById204, DeleteBudgetSectionById400, DeleteBudgetSectionById404, DeleteBudgetSectionByIdMutationResponse, DeleteBudgetSectionByIdMutation } from "./DeleteBudgetSectionById.ts";
 export type { GetBudgetByIdPathParams, GetBudgetById200, GetBudgetById404, GetBudgetByIdQueryResponse, GetBudgetByIdQuery } from "./GetBudgetById.ts";
 export type { GetBudgetsQueryParams, GetBudgets200, GetBudgetsQueryResponse, GetBudgetsQuery } from "./GetBudgets.ts";
 export type { GetCategoriesQueryParams, GetCategories200, GetCategoriesQueryResponse, GetCategoriesQuery } from "./GetCategories.ts";

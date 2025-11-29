@@ -18,6 +18,7 @@ import {
 import { Form } from "@/components/ui/form";
 import {
   getBudgetByIdQueryKey,
+  getBudgetsQueryKey,
   useCreateBudgetItem,
   useGetEquipments,
 } from "@/http/generated";
@@ -82,6 +83,10 @@ export function CreateItemDialog({
       async onSuccess() {
         await queryClient.invalidateQueries({
           queryKey: getBudgetByIdQueryKey(budgetId),
+        });
+
+        await queryClient.invalidateQueries({
+          queryKey: getBudgetsQueryKey(),
         });
         form.reset();
         setIsOpen(false);

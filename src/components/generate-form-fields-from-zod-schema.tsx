@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
 import type { UseFormReturn } from "react-hook-form";
 import z from "zod";
+import { formatDateWithTimeToLocalInput } from "@/utils/format-date-with-time-to-local-input";
 import {
   FormControl,
   FormField,
@@ -21,7 +22,7 @@ import { Switch } from "./ui/switch";
 type extraFieldOptions = {
   values?: { value: string; label: string; disabled?: boolean }[] | undefined;
   loading: boolean;
-  type?: "date" | "array";
+  type?: "datetime-local" | "date" | "array";
 };
 
 export function generateFormFieldsFromZodSchema<T extends z.ZodTypeAny>(
@@ -207,7 +208,6 @@ function renderField<T extends z.ZodTypeAny>(
               <FormLabel>{description}</FormLabel>
               <FormControl>
                 <Input
-                  {...field}
                   id={field.name}
                   onChange={(e) => {
                     const date = e.target.value
@@ -216,10 +216,13 @@ function renderField<T extends z.ZodTypeAny>(
                     field.onChange(date);
                   }}
                   placeholder={description}
-                  type="date"
+                  type={fieldValues?.type || "date"} // Usa o tipo definido (datetime-local ou date)
+                  // CORREÇÃO AQUI:
                   value={
                     field.value
-                      ? new Date(field.value).toISOString().substring(0, 10)
+                      ? fieldValues?.type === "datetime-local"
+                        ? formatDateWithTimeToLocalInput(new Date(field.value)) // YYYY-MM-DDTHH:mm
+                        : new Date(field.value).toISOString().split("T")[0] // YYYY-MM-DD
                       : ""
                   }
                 />

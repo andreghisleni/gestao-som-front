@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Pencil, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -20,7 +20,9 @@ import {
   getBudgetByIdQueryKey,
   getBudgetsQueryKey,
   useCreateBudget,
+  useUpdateBudget,
 } from "@/http/generated";
+import type { Budget } from "./columns";
 
 const createBudgetSchema = z.object({
   clientName: z
@@ -34,7 +36,7 @@ const createBudgetSchema = z.object({
   // O backend espera ISO String, mas o input type="datetime-local" ajuda a formatar
 });
 
-export function CreateBudgetDialog() {
+export function CreateBudgetDialog({ budget }: { budget?: Budget }) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -45,6 +47,12 @@ export function CreateBudgetDialog() {
       clientName: "",
       eventDate: undefined,
     },
+    values: budget
+      ? {
+          clientName: budget.clientName,
+          eventDate: new Date(budget.eventDate),
+        }
+      : undefined,
   });
 
   const createBudget = useCreateBudget({
@@ -75,6 +83,27 @@ export function CreateBudgetDialog() {
     },
   });
 
+  const updateBudget = useUpdateBudget({
+    mutation: {
+      onSuccess: async (data) => {
+        await queryClient.invalidateQueries({
+          queryKey: getBudgetsQueryKey(),
+        });
+        await queryClient.invalidateQueries({
+          queryKey: getBudgetByIdQueryKey(data.id),
+        });
+        toast.success("Orçamento atualizado com sucesso");
+        setIsOpen(false);
+        form.reset();
+      },
+      onError: (error) => {
+        toast.error("Erro ao atualizar orçamento", {
+          description: error.response.data.error,
+        });
+      },
+    },
+  });
+
   async function onSubmit(values: z.infer<typeof createBudgetSchema>) {
     // Garante formato ISO 8601 para o backend
     const payload = {
@@ -82,7 +111,17 @@ export function CreateBudgetDialog() {
       eventDate: new Date(values.eventDate).toISOString(),
       sections: [], // Começa sem seções
     };
-    await createBudget.mutateAsync({ data: payload });
+    if (budget) {
+      await updateBudget.mutateAsync({
+        budgetId: budget.id,
+        data: {
+          ...values,
+          eventDate: new Date(values.eventDate).toISOString(),
+        },
+      });
+    } else {
+      await createBudget.mutateAsync({ data: payload });
+    }
   }
 
   useEffect(() => {
@@ -93,11 +132,19 @@ export function CreateBudgetDialog() {
 
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
-      <DialogTrigger asChild>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" /> Novo Orçamento
-        </Button>
-      </DialogTrigger>
+      {budget ? (
+        <DialogTrigger asChild>
+          <Button color="blue" size="icon" variant="outline">
+            <Pencil className="h-4 w-4" />
+          </Button>
+        </DialogTrigger>
+      ) : (
+        <DialogTrigger asChild>
+          <Button>
+            <Plus className="mr-2 h-4 w-4" /> Novo Orçamento
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Novo Orçamento</DialogTitle>
@@ -105,7 +152,7 @@ export function CreateBudgetDialog() {
         <Form {...form}>
           <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
             {generateFormFieldsFromZodSchema(createBudgetSchema, form, {
-              eventDate: { type: "date", loading: false },
+              eventDate: { type: "datetime-local", loading: false },
             })}
 
             <Button
@@ -115,6 +162,8 @@ export function CreateBudgetDialog() {
             >
               {form.formState.isSubmitting ? (
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : budget ? (
+                "Salvar e atualizar"
               ) : (
                 "Criar e Continuar"
               )}

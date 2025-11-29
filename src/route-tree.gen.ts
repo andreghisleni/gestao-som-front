@@ -22,6 +22,7 @@ import { Route as AppRentalEquipmentIndexRouteImport } from './pages/_app/rental
 import { Route as AppRentalCategoriesIndexRouteImport } from './pages/_app/rental/categories/index'
 import { Route as AppRentalBudgetsIndexRouteImport } from './pages/_app/rental/budgets/index'
 import { Route as AppRentalBudgetsBudgetIdIndexRouteImport } from './pages/_app/rental/budgets/$budgetId/index'
+import { Route as WRentalBudgetsBudgetIdPrintRouteImport } from './pages/w/rental/budgets/$budgetId/print'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
   id: '/_auth',
@@ -88,6 +89,12 @@ const AppRentalBudgetsBudgetIdIndexRoute =
     path: '/rental/budgets/$budgetId/',
     getParentRoute: () => AppLayoutRoute,
   } as any)
+const WRentalBudgetsBudgetIdPrintRoute =
+  WRentalBudgetsBudgetIdPrintRouteImport.update({
+    id: '/w/rental/budgets/$budgetId/print',
+    path: '/w/rental/budgets/$budgetId/print',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
   '/rental/budgets': typeof AppRentalBudgetsIndexRoute
   '/rental/categories': typeof AppRentalCategoriesIndexRoute
   '/rental/equipment': typeof AppRentalEquipmentIndexRoute
+  '/w/rental/budgets/$budgetId/print': typeof WRentalBudgetsBudgetIdPrintRoute
   '/rental/budgets/$budgetId': typeof AppRentalBudgetsBudgetIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -113,6 +121,7 @@ export interface FileRoutesByTo {
   '/rental/budgets': typeof AppRentalBudgetsIndexRoute
   '/rental/categories': typeof AppRentalCategoriesIndexRoute
   '/rental/equipment': typeof AppRentalEquipmentIndexRoute
+  '/w/rental/budgets/$budgetId/print': typeof WRentalBudgetsBudgetIdPrintRoute
   '/rental/budgets/$budgetId': typeof AppRentalBudgetsBudgetIdIndexRoute
 }
 export interface FileRoutesById {
@@ -129,6 +138,7 @@ export interface FileRoutesById {
   '/_app/rental/budgets/': typeof AppRentalBudgetsIndexRoute
   '/_app/rental/categories/': typeof AppRentalCategoriesIndexRoute
   '/_app/rental/equipment/': typeof AppRentalEquipmentIndexRoute
+  '/w/rental/budgets/$budgetId/print': typeof WRentalBudgetsBudgetIdPrintRoute
   '/_app/rental/budgets/$budgetId/': typeof AppRentalBudgetsBudgetIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -144,6 +154,7 @@ export interface FileRouteTypes {
     | '/rental/budgets'
     | '/rental/categories'
     | '/rental/equipment'
+    | '/w/rental/budgets/$budgetId/print'
     | '/rental/budgets/$budgetId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -157,6 +168,7 @@ export interface FileRouteTypes {
     | '/rental/budgets'
     | '/rental/categories'
     | '/rental/equipment'
+    | '/w/rental/budgets/$budgetId/print'
     | '/rental/budgets/$budgetId'
   id:
     | '__root__'
@@ -172,6 +184,7 @@ export interface FileRouteTypes {
     | '/_app/rental/budgets/'
     | '/_app/rental/categories/'
     | '/_app/rental/equipment/'
+    | '/w/rental/budgets/$budgetId/print'
     | '/_app/rental/budgets/$budgetId/'
   fileRoutesById: FileRoutesById
 }
@@ -179,6 +192,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppLayoutRoute: typeof AppLayoutRouteWithChildren
   AuthLayoutRoute: typeof AuthLayoutRouteWithChildren
+  WRentalBudgetsBudgetIdPrintRoute: typeof WRentalBudgetsBudgetIdPrintRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -274,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRentalBudgetsBudgetIdIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/w/rental/budgets/$budgetId/print': {
+      id: '/w/rental/budgets/$budgetId/print'
+      path: '/w/rental/budgets/$budgetId/print'
+      fullPath: '/w/rental/budgets/$budgetId/print'
+      preLoaderRoute: typeof WRentalBudgetsBudgetIdPrintRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -321,6 +342,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppLayoutRoute: AppLayoutRouteWithChildren,
   AuthLayoutRoute: AuthLayoutRouteWithChildren,
+  WRentalBudgetsBudgetIdPrintRoute: WRentalBudgetsBudgetIdPrintRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
