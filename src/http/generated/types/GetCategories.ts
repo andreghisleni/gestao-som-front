@@ -12,14 +12,12 @@ export type GetCategoriesQueryParams = {
     "f.filter"?: string;
     /**
      * @default 1
-     * @type number | undefined
     */
-    "p.page"?: number;
+    "p.page"?: (string | number);
     /**
      * @default 20
-     * @type number | undefined
     */
-    "p.pageSize"?: number;
+    "p.pageSize"?: (string | number);
     /**
      * @description Type of the order
     */
@@ -51,6 +49,10 @@ export type GetCategories200 = {
          * @type number
         */
         rentalPercent: number;
+        /**
+         * @type string | undefined
+        */
+        description?: string;
         createdAt: (string | string | number);
         updatedAt: (string | string | number);
         /**

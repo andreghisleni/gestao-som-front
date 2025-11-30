@@ -27,6 +27,10 @@ export type GetCategoryById200 = {
      * @type number
     */
     rentalPercent: number;
+    /**
+     * @type string | undefined
+    */
+    description?: string;
     createdAt: (string | string | number);
     updatedAt: (string | string | number);
 };

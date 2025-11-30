@@ -26,6 +26,10 @@ export type CreateCategoryMutationRequest = {
      * @type number
     */
     rentalPercent: number;
+    /**
+     * @type string | undefined
+    */
+    description?: string;
 };
 
 export type CreateCategoryMutationResponse = CreateCategory201;

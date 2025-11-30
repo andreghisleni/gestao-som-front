@@ -40,6 +40,10 @@ export type UpdateCategoryMutationRequest = {
      * @type number | undefined
     */
     rentalPercent?: number;
+    /**
+     * @type string | undefined
+    */
+    description?: string;
 };
 
 export type UpdateCategoryMutationResponse = UpdateCategory201;

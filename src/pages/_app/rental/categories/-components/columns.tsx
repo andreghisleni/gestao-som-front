@@ -2,7 +2,7 @@
 /** biome-ignore-all lint/a11y/noStaticElementInteractions: <explanation> */
 import type { ColumnDef } from "@tanstack/react-table";
 import { tdbs } from "@/components/TableDataButton-server";
-import { tdbNew } from "@/components/table/TableDataButton";
+import { tdb, tdbNew } from "@/components/table/TableDataButton";
 import { Badge } from "@/components/ui/badge";
 import type { GetCategories200 } from "@/http/generated";
 import { CategoryForm } from "./category-form";
@@ -24,6 +24,7 @@ export const columns: ColumnDef<Category>[] = [
       <Badge variant="outline">{row.original.rentalPercent}%</Badge>
     ),
   }),
+  tdb("description", "Descrição"),
   tdbNew({
     name: "createdAt",
     label: "Criado em",

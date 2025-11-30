@@ -17,14 +17,12 @@ export type GetEquipmentsQueryParams = {
     "f.categoryId"?: string;
     /**
      * @default 1
-     * @type number | undefined
     */
-    "p.page"?: number;
+    "p.page"?: (string | number);
     /**
      * @default 20
-     * @type number | undefined
     */
-    "p.pageSize"?: number;
+    "p.pageSize"?: (string | number);
     "ob.name"?: (string | string);
     "ob.purchasePrice"?: (string | string);
     "ob.rentalPrice"?: (string | string);
@@ -66,6 +64,10 @@ export type GetEquipments200 = {
              * @type number
             */
             rentalPercent: number;
+            /**
+             * @type string | undefined
+            */
+            description?: string;
         };
         /**
          * @type number

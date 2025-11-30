@@ -112,6 +112,15 @@ export function EquipmentForm({ data }: { data?: Equipment }) {
     }
   }, [isOpen, form]);
 
+  const categoryWatch = useWatch({
+    control: form.control,
+    name: "categoryId",
+  });
+
+  const selectedCategory = categoriesData?.data.find(
+    ({ id }) => id === categoryWatch
+  );
+
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
       <DialogTrigger asChild>
@@ -148,6 +157,17 @@ export function EquipmentForm({ data }: { data?: Equipment }) {
                 {formatToBRL(rentalPricePreview)}
               </span>
             </div>
+
+            {selectedCategory && (
+              <div className="flex items-center justify-between gap-4 rounded-md bg-muted p-3 text-sm">
+                <span className="whitespace-nowrap">
+                  {selectedCategory?.name} ({selectedCategory.rentalPercent}%):
+                </span>
+                <span className="font-bold text-green-600">
+                  {selectedCategory.description}
+                </span>
+              </div>
+            )}
 
             <Button
               className="w-full"
