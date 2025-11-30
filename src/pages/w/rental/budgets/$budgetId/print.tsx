@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Loader2, Printer } from "lucide-react";
 import { useEffect } from "react";
-
+import LogoImg from "@/assets/logo.png";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useGetBudgetById } from "@/http/generated";
@@ -88,11 +88,22 @@ function BudgetPrintPage() {
         {/* 1. CABEÇALHO DA EMPRESA */}
         <div className="flex items-center justify-between border-b pb-6">
           <div>
-            <h1 className="font-bold text-2xl uppercase tracking-wider">
+            {/* <h1 className="font-bold text-2xl uppercase tracking-wider">
               Gestão Som
             </h1>
             <p className="text-gray-500 text-sm">
               Soluções em Áudio e Iluminação
+            </p> */}
+            <picture>
+              <source srcSet={LogoImg} type="image/png" />
+              <img
+                alt="Logo André Sonorização"
+                className="h-34 rounded-2xl"
+                src={LogoImg}
+              />
+            </picture>
+            <p className="text-gray-500 text-sm">
+              Som e luz para o seu evento.
             </p>
           </div>
           <div className="text-right text-gray-500 text-sm">
