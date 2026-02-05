@@ -13,6 +13,7 @@ export type { GetCategoryByIdPathParams, GetCategoryById200, GetCategoryById404,
 export type { GetEquipmentByIdPathParams, GetEquipmentById200, GetEquipmentById404, GetEquipmentByIdQueryResponse, GetEquipmentByIdQuery } from "./GetEquipmentById.ts";
 export type { GetEquipmentsQueryParams, GetEquipments200, GetEquipmentsQueryResponse, GetEquipmentsQuery } from "./GetEquipments.ts";
 export type { HealthCheck200, HealthCheckQueryResponse, HealthCheckQuery } from "./HealthCheck.ts";
+export type { ToggleShowInBudgetPrintPathParams, ToggleShowInBudgetPrint201, ToggleShowInBudgetPrint400, ToggleShowInBudgetPrint404, ToggleShowInBudgetPrintMutationResponse, ToggleShowInBudgetPrintMutation } from "./ToggleShowInBudgetPrint.ts";
 export type { UpdateBudgetPathParams, UpdateBudget201, UpdateBudget404, UpdateBudgetMutationRequest, UpdateBudgetMutationResponse, UpdateBudgetMutation } from "./UpdateBudget.ts";
 export type { UpdateBudgetItemPathParams, UpdateBudgetItem201, UpdateBudgetItem400, UpdateBudgetItem404, UpdateBudgetItemMutationRequest, UpdateBudgetItemMutationResponse, UpdateBudgetItemMutation } from "./UpdateBudgetItem.ts";
 export type { UpdateBudgetSectionPathParams, UpdateBudgetSection201, UpdateBudgetSection404, UpdateBudgetSectionMutationRequest, UpdateBudgetSectionMutationResponse, UpdateBudgetSectionMutation } from "./UpdateBudgetSection.ts";

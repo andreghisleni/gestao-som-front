@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { useParams } from "@tanstack/react-router";
-import { Loader2, Pencil, Trash2 } from "lucide-react";
+import { Eye, EyeOff, Loader2, Pencil, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -19,6 +19,7 @@ import { Form } from "@/components/ui/form";
 import {
   getBudgetByIdQueryKey,
   useDeleteBudgetItemById,
+  useToggleShowInBudgetPrint,
   useUpdateBudgetItem,
 } from "@/http/generated";
 
@@ -26,11 +27,12 @@ import {
 const editItemSchema = z.object({
   quantity: z.coerce.number().int().min(1, "Qtd mínima 1"),
   unitPrice: z.coerce.number().min(0, "Preço inválido"),
+  description: z.string().min(10).describe("Descrição do item"),
 });
 
 interface EditItemProps {
   itemId: string;
-  itemData: { quantity: number; unitPrice: number; name: string };
+  itemData: { quantity: number; unitPrice: number; name: string; description: string };
 }
 
 export function EditItemDialog({ itemId, itemData }: EditItemProps) {
@@ -69,6 +71,7 @@ export function EditItemDialog({ itemId, itemData }: EditItemProps) {
       data: {
         quantity: values.quantity,
         customUnitPrice: values.unitPrice, // Backend espera customUnitPrice para sobrescrever
+        description: values.description,
       },
     });
   };
@@ -78,6 +81,7 @@ export function EditItemDialog({ itemId, itemData }: EditItemProps) {
       form.reset({
         quantity: itemData.quantity,
         unitPrice: Number(itemData.unitPrice),
+        description: itemData.description,
       });
     }
   }, [isOpen, itemData, form]);
@@ -147,6 +151,41 @@ export function DeleteItemButton({ itemId }: { itemId: string }) {
         <Loader2 className="h-3.5 w-3.5 animate-spin" />
       ) : (
         <Trash2 className="h-3.5 w-3.5" />
+      )}
+    </Button>
+  );
+}
+
+export function ToggleShowInBudgetPrintItemButton({ itemId, showInBudgetPrint }: { itemId: string, showInBudgetPrint: boolean }) {
+  const budgetId = useParams({ strict: false }).budgetId as string;
+  const queryClient = useQueryClient();
+
+  const toggleShowInBudgetPrint = useToggleShowInBudgetPrint({
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: getBudgetByIdQueryKey(budgetId),
+        });
+        toast.success("Item removido");
+      },
+      onError: (err) => toast.error("Erro", { description: err.message }),
+    },
+  });
+
+  return (
+    <Button
+      className="h-7 w-7 text-muted-foreground hover:text-destructive"
+      disabled={toggleShowInBudgetPrint.isPending}
+      onClick={() => toggleShowInBudgetPrint.mutate({ id: itemId, budgetId })}
+      size="icon"
+      variant="ghost" // Passando budgetId conforme rota
+    >
+      {toggleShowInBudgetPrint.isPending ? (
+        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+      ) : showInBudgetPrint ? (
+        <Eye className="h-3.5 w-3.5" />
+      ) : (
+        <EyeOff className="h-3.5 w-3.5" />
       )}
     </Button>
   );

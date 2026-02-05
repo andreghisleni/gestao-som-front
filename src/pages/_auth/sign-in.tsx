@@ -78,7 +78,11 @@ function SignIn() {
 
     toast.success(`Bem-vindo ${data.user.name}`);
     // Navega para o dashboard após o login bem-sucedido
-    navigate({ to: '/', replace: true });
+
+    setTimeout(() =>
+      navigate({ to: '/', replace: true }),
+      500
+    );
   }
 
   return (

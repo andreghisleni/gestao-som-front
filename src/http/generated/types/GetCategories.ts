@@ -12,12 +12,14 @@ export type GetCategoriesQueryParams = {
     "f.filter"?: string;
     /**
      * @default 1
+     * @type number | undefined
     */
-    "p.page"?: (string | number);
+    "p.page"?: number;
     /**
      * @default 20
+     * @type number | undefined
     */
-    "p.pageSize"?: (string | number);
+    "p.pageSize"?: number;
     /**
      * @description Type of the order
     */

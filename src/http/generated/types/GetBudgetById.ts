@@ -104,6 +104,11 @@ export type GetBudgetById200 = {
                     name: string;
                 };
             };
+            /**
+             * @type boolean
+            */
+            showInBudgetPrint: boolean;
+            description: (string | null) | null;
         }[];
     }[];
 };

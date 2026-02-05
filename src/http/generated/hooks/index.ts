@@ -20,6 +20,7 @@ export type { GetEquipmentsQueryKey } from "./useGetEquipments.ts";
 export type { GetEquipmentsSuspenseQueryKey } from "./useGetEquipmentsSuspense.ts";
 export type { HealthCheckQueryKey } from "./useHealthCheck.ts";
 export type { HealthCheckSuspenseQueryKey } from "./useHealthCheckSuspense.ts";
+export type { ToggleShowInBudgetPrintMutationKey } from "./useToggleShowInBudgetPrint.ts";
 export type { UpdateBudgetMutationKey } from "./useUpdateBudget.ts";
 export type { UpdateBudgetItemMutationKey } from "./useUpdateBudgetItem.ts";
 export type { UpdateBudgetSectionMutationKey } from "./useUpdateBudgetSection.ts";
@@ -47,6 +48,7 @@ export { getEquipmentsQueryKey, getEquipments, getEquipmentsQueryOptions, useGet
 export { getEquipmentsSuspenseQueryKey, getEquipmentsSuspense, getEquipmentsSuspenseQueryOptions, useGetEquipmentsSuspense } from "./useGetEquipmentsSuspense.ts";
 export { healthCheckQueryKey, healthCheck, healthCheckQueryOptions, useHealthCheck } from "./useHealthCheck.ts";
 export { healthCheckSuspenseQueryKey, healthCheckSuspense, healthCheckSuspenseQueryOptions, useHealthCheckSuspense } from "./useHealthCheckSuspense.ts";
+export { toggleShowInBudgetPrintMutationKey, toggleShowInBudgetPrint, useToggleShowInBudgetPrint } from "./useToggleShowInBudgetPrint.ts";
 export { updateBudgetMutationKey, updateBudget, useUpdateBudget } from "./useUpdateBudget.ts";
 export { updateBudgetItemMutationKey, updateBudgetItem, useUpdateBudgetItem } from "./useUpdateBudgetItem.ts";
 export { updateBudgetSectionMutationKey, updateBudgetSection, useUpdateBudgetSection } from "./useUpdateBudgetSection.ts";

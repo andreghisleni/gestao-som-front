@@ -22,6 +22,7 @@ import { Route as AppRentalEquipmentIndexRouteImport } from './pages/_app/rental
 import { Route as AppRentalCategoriesIndexRouteImport } from './pages/_app/rental/categories/index'
 import { Route as AppRentalBudgetsIndexRouteImport } from './pages/_app/rental/budgets/index'
 import { Route as AppRentalBudgetsBudgetIdIndexRouteImport } from './pages/_app/rental/budgets/$budgetId/index'
+import { Route as WRentalBudgetsBudgetIdPrintFullRouteImport } from './pages/w/rental/budgets/$budgetId/print-full'
 import { Route as WRentalBudgetsBudgetIdPrintRouteImport } from './pages/w/rental/budgets/$budgetId/print'
 
 const AuthLayoutRoute = AuthLayoutRouteImport.update({
@@ -89,6 +90,12 @@ const AppRentalBudgetsBudgetIdIndexRoute =
     path: '/rental/budgets/$budgetId/',
     getParentRoute: () => AppLayoutRoute,
   } as any)
+const WRentalBudgetsBudgetIdPrintFullRoute =
+  WRentalBudgetsBudgetIdPrintFullRouteImport.update({
+    id: '/w/rental/budgets/$budgetId/print-full',
+    path: '/w/rental/budgets/$budgetId/print-full',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WRentalBudgetsBudgetIdPrintRoute =
   WRentalBudgetsBudgetIdPrintRouteImport.update({
     id: '/w/rental/budgets/$budgetId/print',
@@ -108,6 +115,7 @@ export interface FileRoutesByFullPath {
   '/rental/categories': typeof AppRentalCategoriesIndexRoute
   '/rental/equipment': typeof AppRentalEquipmentIndexRoute
   '/w/rental/budgets/$budgetId/print': typeof WRentalBudgetsBudgetIdPrintRoute
+  '/w/rental/budgets/$budgetId/print-full': typeof WRentalBudgetsBudgetIdPrintFullRoute
   '/rental/budgets/$budgetId': typeof AppRentalBudgetsBudgetIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -122,6 +130,7 @@ export interface FileRoutesByTo {
   '/rental/categories': typeof AppRentalCategoriesIndexRoute
   '/rental/equipment': typeof AppRentalEquipmentIndexRoute
   '/w/rental/budgets/$budgetId/print': typeof WRentalBudgetsBudgetIdPrintRoute
+  '/w/rental/budgets/$budgetId/print-full': typeof WRentalBudgetsBudgetIdPrintFullRoute
   '/rental/budgets/$budgetId': typeof AppRentalBudgetsBudgetIdIndexRoute
 }
 export interface FileRoutesById {
@@ -139,6 +148,7 @@ export interface FileRoutesById {
   '/_app/rental/categories/': typeof AppRentalCategoriesIndexRoute
   '/_app/rental/equipment/': typeof AppRentalEquipmentIndexRoute
   '/w/rental/budgets/$budgetId/print': typeof WRentalBudgetsBudgetIdPrintRoute
+  '/w/rental/budgets/$budgetId/print-full': typeof WRentalBudgetsBudgetIdPrintFullRoute
   '/_app/rental/budgets/$budgetId/': typeof AppRentalBudgetsBudgetIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/rental/categories'
     | '/rental/equipment'
     | '/w/rental/budgets/$budgetId/print'
+    | '/w/rental/budgets/$budgetId/print-full'
     | '/rental/budgets/$budgetId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/rental/categories'
     | '/rental/equipment'
     | '/w/rental/budgets/$budgetId/print'
+    | '/w/rental/budgets/$budgetId/print-full'
     | '/rental/budgets/$budgetId'
   id:
     | '__root__'
@@ -185,6 +197,7 @@ export interface FileRouteTypes {
     | '/_app/rental/categories/'
     | '/_app/rental/equipment/'
     | '/w/rental/budgets/$budgetId/print'
+    | '/w/rental/budgets/$budgetId/print-full'
     | '/_app/rental/budgets/$budgetId/'
   fileRoutesById: FileRoutesById
 }
@@ -193,6 +206,7 @@ export interface RootRouteChildren {
   AppLayoutRoute: typeof AppLayoutRouteWithChildren
   AuthLayoutRoute: typeof AuthLayoutRouteWithChildren
   WRentalBudgetsBudgetIdPrintRoute: typeof WRentalBudgetsBudgetIdPrintRoute
+  WRentalBudgetsBudgetIdPrintFullRoute: typeof WRentalBudgetsBudgetIdPrintFullRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -288,6 +302,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRentalBudgetsBudgetIdIndexRouteImport
       parentRoute: typeof AppLayoutRoute
     }
+    '/w/rental/budgets/$budgetId/print-full': {
+      id: '/w/rental/budgets/$budgetId/print-full'
+      path: '/w/rental/budgets/$budgetId/print-full'
+      fullPath: '/w/rental/budgets/$budgetId/print-full'
+      preLoaderRoute: typeof WRentalBudgetsBudgetIdPrintFullRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/w/rental/budgets/$budgetId/print': {
       id: '/w/rental/budgets/$budgetId/print'
       path: '/w/rental/budgets/$budgetId/print'
@@ -343,6 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppLayoutRoute: AppLayoutRouteWithChildren,
   AuthLayoutRoute: AuthLayoutRouteWithChildren,
   WRentalBudgetsBudgetIdPrintRoute: WRentalBudgetsBudgetIdPrintRoute,
+  WRentalBudgetsBudgetIdPrintFullRoute: WRentalBudgetsBudgetIdPrintFullRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

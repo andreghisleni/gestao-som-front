@@ -28,7 +28,7 @@ import {
 import { formatToBRL } from "@/utils/formatToBRL";
 import { CreateItemDialog } from "./-components/create-item-dialog";
 import { CreateSectionDialog } from "./-components/create-section-dialog";
-import { DeleteItemButton, EditItemDialog } from "./-components/item-actions";
+import { DeleteItemButton, EditItemDialog, ToggleShowInBudgetPrintItemButton } from "./-components/item-actions";
 import {
   DeleteSectionDialog,
   EditSectionDialog,
@@ -161,15 +161,26 @@ function BudgetDetailsPage() {
             </Badge>
           </div>
         </div>
-        <Button asChild variant="outline">
-          <Link
-            params={{ budgetId }}
-            target="_blank"
-            to="/w/rental/budgets/$budgetId/print"
-          >
-            <Printer className="mr-2 h-4 w-4" /> Imprimir
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button asChild variant="outline">
+            <Link
+              params={{ budgetId }}
+              target="_blank"
+              to="/w/rental/budgets/$budgetId/print"
+            >
+              <Printer className="mr-2 h-4 w-4" /> Imprimir
+            </Link>
+          </Button>
+          <Button asChild variant="outline">
+            <Link
+              params={{ budgetId }}
+              target="_blank"
+              to="/w/rental/budgets/$budgetId/print-full"
+            >
+              <Printer className="mr-2 h-4 w-4" /> Imprimir (Detalhado)
+            </Link>
+          </Button>
+        </div>
       </div>
       {/* CARDS */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
@@ -315,11 +326,16 @@ function BudgetDetailsPage() {
                           {/* BOTÕES DE AÇÃO DO ITEM */}
                           <td className="px-4 py-2 text-right">
                             <div className="flex justify-end opacity-0 transition-opacity group-hover:opacity-100">
+                              <ToggleShowInBudgetPrintItemButton
+                                itemId={item.id}
+                                showInBudgetPrint={item.showInBudgetPrint}
+                              />
                               <EditItemDialog
                                 itemData={{
                                   name: item.equipment?.name || "Item",
                                   quantity: item.quantity,
                                   unitPrice: item.unitPrice,
+                                  description: item.description || "",
                                 }}
                                 itemId={item.id}
                               />

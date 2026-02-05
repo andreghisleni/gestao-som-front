@@ -45,6 +45,10 @@ export type UpdateBudgetItemMutationRequest = {
      * @type number | undefined
     */
     customUnitPrice?: number;
+    /**
+     * @type string | undefined
+    */
+    description?: string;
 };
 
 export type UpdateBudgetItemMutationResponse = UpdateBudgetItem201;

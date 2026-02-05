@@ -20,6 +20,7 @@ export type { GetEquipmentsQueryKey } from "./hooks/useGetEquipments.ts";
 export type { GetEquipmentsSuspenseQueryKey } from "./hooks/useGetEquipmentsSuspense.ts";
 export type { HealthCheckQueryKey } from "./hooks/useHealthCheck.ts";
 export type { HealthCheckSuspenseQueryKey } from "./hooks/useHealthCheckSuspense.ts";
+export type { ToggleShowInBudgetPrintMutationKey } from "./hooks/useToggleShowInBudgetPrint.ts";
 export type { UpdateBudgetMutationKey } from "./hooks/useUpdateBudget.ts";
 export type { UpdateBudgetItemMutationKey } from "./hooks/useUpdateBudgetItem.ts";
 export type { UpdateBudgetSectionMutationKey } from "./hooks/useUpdateBudgetSection.ts";
@@ -40,6 +41,7 @@ export type { GetCategoryByIdPathParams, GetCategoryById200, GetCategoryById404,
 export type { GetEquipmentByIdPathParams, GetEquipmentById200, GetEquipmentById404, GetEquipmentByIdQueryResponse, GetEquipmentByIdQuery } from "./types/GetEquipmentById.ts";
 export type { GetEquipmentsQueryParams, GetEquipments200, GetEquipmentsQueryResponse, GetEquipmentsQuery } from "./types/GetEquipments.ts";
 export type { HealthCheck200, HealthCheckQueryResponse, HealthCheckQuery } from "./types/HealthCheck.ts";
+export type { ToggleShowInBudgetPrintPathParams, ToggleShowInBudgetPrint201, ToggleShowInBudgetPrint400, ToggleShowInBudgetPrint404, ToggleShowInBudgetPrintMutationResponse, ToggleShowInBudgetPrintMutation } from "./types/ToggleShowInBudgetPrint.ts";
 export type { UpdateBudgetPathParams, UpdateBudget201, UpdateBudget404, UpdateBudgetMutationRequest, UpdateBudgetMutationResponse, UpdateBudgetMutation } from "./types/UpdateBudget.ts";
 export type { UpdateBudgetItemPathParams, UpdateBudgetItem201, UpdateBudgetItem400, UpdateBudgetItem404, UpdateBudgetItemMutationRequest, UpdateBudgetItemMutationResponse, UpdateBudgetItemMutation } from "./types/UpdateBudgetItem.ts";
 export type { UpdateBudgetSectionPathParams, UpdateBudgetSection201, UpdateBudgetSection404, UpdateBudgetSectionMutationRequest, UpdateBudgetSectionMutationResponse, UpdateBudgetSectionMutation } from "./types/UpdateBudgetSection.ts";
@@ -67,6 +69,7 @@ export { getEquipmentsQueryKey, getEquipments, getEquipmentsQueryOptions, useGet
 export { getEquipmentsSuspenseQueryKey, getEquipmentsSuspense, getEquipmentsSuspenseQueryOptions, useGetEquipmentsSuspense } from "./hooks/useGetEquipmentsSuspense.ts";
 export { healthCheckQueryKey, healthCheck, healthCheckQueryOptions, useHealthCheck } from "./hooks/useHealthCheck.ts";
 export { healthCheckSuspenseQueryKey, healthCheckSuspense, healthCheckSuspenseQueryOptions, useHealthCheckSuspense } from "./hooks/useHealthCheckSuspense.ts";
+export { toggleShowInBudgetPrintMutationKey, toggleShowInBudgetPrint, useToggleShowInBudgetPrint } from "./hooks/useToggleShowInBudgetPrint.ts";
 export { updateBudgetMutationKey, updateBudget, useUpdateBudget } from "./hooks/useUpdateBudget.ts";
 export { updateBudgetItemMutationKey, updateBudgetItem, useUpdateBudgetItem } from "./hooks/useUpdateBudgetItem.ts";
 export { updateBudgetSectionMutationKey, updateBudgetSection, useUpdateBudgetSection } from "./hooks/useUpdateBudgetSection.ts";
