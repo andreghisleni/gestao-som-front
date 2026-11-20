@@ -676,16 +676,21 @@ export function ReviewBlock({
   children,
 }: {
   title: string;
-  onEdit: () => void;
+  /** Ausente = bloco somente leitura: a tela interna não edita a resposta. */
+  onEdit?: () => void;
   children: React.ReactNode;
 }) {
   return (
     <div className="overflow-hidden rounded-lg border">
       <div className="flex items-center justify-between gap-3 bg-muted px-4 py-2.5">
         <h3 className="font-semibold text-sm">{title}</h3>
-        <Button onClick={onEdit} size="sm" variant="ghost">
-          Editar
-        </Button>
+        {onEdit ? (
+          <Button onClick={onEdit} size="sm" variant="ghost">
+            Editar
+          </Button>
+        ) : (
+          <span aria-hidden className="w-12" />
+        )}
       </div>
       <div>{children}</div>
     </div>

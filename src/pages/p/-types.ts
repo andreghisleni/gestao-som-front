@@ -14,15 +14,15 @@ export type Option = {
 };
 
 export type FormOptionsKey =
-  | 'musicStyles'
-  | 'eventTypes'
-  | 'accessNotes'
-  | 'powerSupply'
-  | 'internetAvailability'
-  | 'venueSizes'
-  | 'startsFlexibility'
-  | 'requestedExtras'
-  | 'contractorTypes';
+  | "musicStyles"
+  | "eventTypes"
+  | "accessNotes"
+  | "powerSupply"
+  | "internetAvailability"
+  | "venueSizes"
+  | "startsFlexibility"
+  | "requestedExtras"
+  | "contractorTypes";
 
 export type FormOptionsDto = Record<FormOptionsKey, Option[]>;
 
@@ -86,6 +86,15 @@ export type PublicBudgetDto = {
     acceptedAt: string;
   } | null;
   submitted: boolean;
+  /**
+   * Pedido de revisão em aberto. É a única parte do histórico que chega até
+   * aqui: o cliente nunca lê resposta antiga, só o recado de agora.
+   */
+  revisionRequest: {
+    version: number;
+    reason: string | null;
+    requestedAt: string | null;
+  } | null;
 };
 
 export type SubmitResultDto = {
@@ -95,6 +104,8 @@ export type SubmitResultDto = {
   status: string;
   durationMinutes: number | null;
   alreadySubmitted: boolean;
+  /** true quando este envio fechou um pedido de revisão. */
+  revisionResolved: boolean;
 };
 
 /** Resposta dos erros de submit: `{ error, fields }` com caminhos de campo. */
@@ -104,12 +115,12 @@ export type SubmitErrorDto = {
 };
 
 export const STEPS = [
-  { id: 0, short: 'Proposta', title: 'Sua proposta' },
-  { id: 1, short: 'Você', title: 'Quem contrata' },
-  { id: 2, short: 'Local', title: 'Onde o som chega' },
-  { id: 3, short: 'Horários', title: 'Quando montamos e tocamos' },
-  { id: 4, short: 'Detalhes', title: 'Repertório e detalhes' },
-  { id: 5, short: 'Revisão', title: 'Confira antes de enviar' },
+  { id: 0, short: "Proposta", title: "Sua proposta" },
+  { id: 1, short: "Você", title: "Quem contrata" },
+  { id: 2, short: "Local", title: "Onde o som chega" },
+  { id: 3, short: "Horários", title: "Quando montamos e tocamos" },
+  { id: 4, short: "Detalhes", title: "Repertório e detalhes" },
+  { id: 5, short: "Revisão", title: "Confira antes de enviar" },
 ] as const;
 
 export const LAST_FORM_STEP = 5;

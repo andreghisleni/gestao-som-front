@@ -120,6 +120,14 @@ export type SavePublicEventDetails200 = {
      * @type boolean
     */
     submitted: boolean;
+    revisionRequest: ({
+        /**
+         * @type number
+        */
+        version: number;
+        reason: (string | null) | null;
+        requestedAt: ((string | string | number) | null) | null;
+    } | null) | null;
 };
 
 export type SavePublicEventDetails404 = {

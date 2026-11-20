@@ -121,6 +121,14 @@ export type GetPublicBudget200 = {
      * @type boolean
     */
     submitted: boolean;
+    revisionRequest: ({
+        /**
+         * @type number
+        */
+        version: number;
+        reason: (string | null) | null;
+        requestedAt: ((string | string | number) | null) | null;
+    } | null) | null;
 };
 
 export type GetPublicBudget404 = {

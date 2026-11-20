@@ -12,35 +12,36 @@
  * projeto, então a página acompanha o tema dark/light do restante do sistema.
  */
 /** biome-ignore-all lint/nursery/noShadow: <explanation> */
-import { useQueryClient } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
-import { Loader2 } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { toast } from 'sonner';
+import { useQueryClient } from "@tanstack/react-query";
+import { createFileRoute } from "@tanstack/react-router";
+import { Loader2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 import {
   getPublicBudgetQueryKey,
   useGetEventFormOptions,
   useGetPublicBudget,
   useSavePublicEventDetails,
   useSubmitPublicEventDetails,
-} from '@/http/generated';
+} from "@/http/generated";
 import {
   duracaoServicoMinutos,
   onlyDigits,
   validarCep,
-} from '@/utils/brDocuments';
-import { PublicTopbar, Stepper } from './-components/public-ui';
+} from "@/utils/brDocuments";
+import { PublicTopbar, Stepper } from "./-components/public-ui";
 import {
   ContractorStep,
   EventStep,
   InvalidLinkView,
   ProposalStep,
   ReviewStep,
+  RevisionNotice,
   ScheduleStep,
   SuccessView,
   VenueStep,
-} from './-components/steps';
-import type { FormState } from './-form';
+} from "./-components/steps";
+import type { FormState } from "./-form";
 import {
   detailsToForm,
   emptyForm,
@@ -51,15 +52,15 @@ import {
   submitPayload,
   validateAll,
   validateStep,
-} from './-form';
+} from "./-form";
 import type {
   FormOptionsDto,
   PublicBudgetDto,
   SubmitErrorDto,
   SubmitResultDto,
-} from './-types';
+} from "./-types";
 
-export const Route = createFileRoute('/p/$token')({
+export const Route = createFileRoute("/p/$token")({
   component: PublicEventPage,
 });
 
@@ -79,19 +80,25 @@ function PublicEventPage() {
   const [result, setResult] = useState<SubmitResultDto | null>(null);
   const [fieldErrors, setFieldErrors] = useState<string[]>([]);
   const [cepBusy, setCepBusy] = useState(false);
-  const [cepMessage, setCepMessage] = useState('');
+  const [cepMessage, setCepMessage] = useState("");
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const hydrated = useRef(false);
 
   // Restaura o rascunho salvo uma única vez, para não cobrir edições em curso.
   useEffect(() => {
     const details = budget?.details;
-    if (!details || hydrated.current) { return; }
+    if (!details || hydrated.current) {
+      return;
+    }
     hydrated.current = true;
     setForm((current) => ({ ...current, ...detailsToForm(details) }));
     const seen = Math.min(Math.max(details.stepSeen ?? 0, 0), LAST_FORM_STEP);
-    if (seen > 0) { setStep(seen); }
-    if (details.contractorName) { setSavedAt('no último acesso'); }
+    if (seen > 0) {
+      setStep(seen);
+    }
+    if (details.contractorName) {
+      setSavedAt("no último acesso");
+    }
   }, [budget?.details]);
 
   const duration = useMemo(
@@ -101,39 +108,41 @@ function PublicEventPage() {
         endTime: form.endTime,
         endsNextDay: form.endsNextDay,
       }),
-    [form.startTime, form.endTime, form.endsNextDay]
+    [form.startTime, form.endTime, form.endsNextDay],
   );
 
   const setField = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((current) => ({ ...current, [key]: value }));
     const pathMap: Partial<Record<keyof FormState, string>> = {
-      name: 'contractor.name',
-      tradeName: 'contractor.tradeName',
-      document: 'contractor.document',
-      email: 'contractor.email',
-      phone: 'contractor.phone',
-      zipCode: 'venue.zipCode',
-      street: 'venue.street',
-      streetNumber: 'venue.streetNumber',
-      district: 'venue.district',
-      city: 'venue.city',
-      state: 'venue.state',
-      internetAvailable: 'venue.internetAvailable',
-      setupTime: 'schedule.setupTime',
-      startTime: 'schedule.startTime',
-      endTime: 'schedule.endTime',
-      musicStyles: 'event.musicStyles',
-      acceptanceName: 'acceptance.name',
-      accepted: 'acceptance.accepted',
+      name: "contractor.name",
+      tradeName: "contractor.tradeName",
+      document: "contractor.document",
+      email: "contractor.email",
+      phone: "contractor.phone",
+      zipCode: "venue.zipCode",
+      street: "venue.street",
+      streetNumber: "venue.streetNumber",
+      district: "venue.district",
+      city: "venue.city",
+      state: "venue.state",
+      internetAvailable: "venue.internetAvailable",
+      setupTime: "schedule.setupTime",
+      startTime: "schedule.startTime",
+      endTime: "schedule.endTime",
+      musicStyles: "event.musicStyles",
+      acceptanceName: "acceptance.name",
+      accepted: "acceptance.accepted",
     };
     const path = pathMap[key];
-    if (path) { setFieldErrors((current) => current.filter((e) => e !== path)); }
+    if (path) {
+      setFieldErrors((current) => current.filter((e) => e !== path));
+    }
   };
 
   const goTo = (next: number) => {
     setStep(Math.min(Math.max(next, 0), LAST_FORM_STEP));
     setFieldErrors([]);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   /** Salva o bloco da etapa atual como rascunho e avança. */
@@ -141,24 +150,24 @@ function PublicEventPage() {
     const errors = validateStep(step, form);
     if (errors.length) {
       setFieldErrors(errors);
-      toast.error('Confira os campos destacados para continuar.');
+      toast.error("Confira os campos destacados para continuar.");
       return;
     }
     try {
       const data = payloadForStep(step, form, target);
       await saveDraft.mutateAsync({ token, data });
       setSavedAt(
-        new Date().toLocaleTimeString('pt-BR', {
-          hour: '2-digit',
-          minute: '2-digit',
-        })
+        new Date().toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       );
       await queryClient.invalidateQueries({
         queryKey: getPublicBudgetQueryKey(token),
       });
       goTo(target);
     } catch {
-      toast.error('Não foi possível salvar agora. Tente novamente.');
+      toast.error("Não foi possível salvar agora. Tente novamente.");
     }
   };
 
@@ -167,7 +176,7 @@ function PublicEventPage() {
     if (errors.length) {
       setFieldErrors(errors);
       goTo(stepForField(errors, LAST_FORM_STEP));
-      toast.error('Faltam informações para enviar.');
+      toast.error("Faltam informações para enviar.");
       return;
     }
     try {
@@ -179,16 +188,16 @@ function PublicEventPage() {
       await queryClient.invalidateQueries({
         queryKey: getPublicBudgetQueryKey(token),
       });
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       const payload = (error as { response?: { data?: SubmitErrorDto } })
         .response?.data;
       if (payload?.fields?.length) {
         setFieldErrors(payload.fields);
         goTo(stepForField(payload.fields, LAST_FORM_STEP));
-        toast.error(payload.error ?? 'Confira os campos destacados.');
+        toast.error(payload.error ?? "Confira os campos destacados.");
       } else {
-        toast.error('Não foi possível enviar agora. Tente novamente.');
+        toast.error("Não foi possível enviar agora. Tente novamente.");
       }
     }
   };
@@ -197,14 +206,16 @@ function PublicEventPage() {
   const lookupCep = async () => {
     const digits = onlyDigits(form.zipCode);
     if (!validarCep(digits)) {
-      setCepMessage('Informe os 8 dígitos do CEP.');
+      setCepMessage("Informe os 8 dígitos do CEP.");
       return;
     }
     setCepBusy(true);
-    setCepMessage('');
+    setCepMessage("");
     try {
       const response = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
-      if (!response.ok) { throw new Error('CEP'); }
+      if (!response.ok) {
+        throw new Error("CEP");
+      }
       const data = (await response.json()) as {
         erro?: boolean;
         logradouro?: string;
@@ -213,19 +224,19 @@ function PublicEventPage() {
         uf?: string;
       };
       if (data.erro) {
-        setCepMessage('CEP não encontrado. Preencha manualmente.');
+        setCepMessage("CEP não encontrado. Preencha manualmente.");
       } else {
         setForm((current) => ({
           ...current,
-          street: current.street || data.logradouro || '',
-          district: current.district || data.bairro || '',
-          city: current.city || data.localidade || '',
-          state: current.state || data.uf || '',
+          street: current.street || data.logradouro || "",
+          district: current.district || data.bairro || "",
+          city: current.city || data.localidade || "",
+          state: current.state || data.uf || "",
         }));
-        setCepMessage('Endereço preenchido. Confira o número e o complemento.');
+        setCepMessage("Endereço preenchido. Confira o número e o complemento.");
       }
     } catch {
-      setCepMessage('Não foi possível consultar o CEP agora.');
+      setCepMessage("Não foi possível consultar o CEP agora.");
     } finally {
       setCepBusy(false);
     }
@@ -280,6 +291,15 @@ function PublicEventPage() {
       <div className="mx-auto w-full max-w-[880px] px-5 py-7 sm:px-6">
         <Stepper current={step} onSelect={goTo} />
 
+        {budget.revisionRequest && (
+          <div className="mb-4">
+            <RevisionNotice
+              onOpen={() => goTo(LAST_FORM_STEP)}
+              revision={budget.revisionRequest}
+            />
+          </div>
+        )}
+
         {step === 0 && <ProposalStep {...stepProps} />}
         {step === 1 && <ContractorStep {...stepProps} />}
         {step === 2 && <VenueStep {...stepProps} />}
@@ -290,7 +310,7 @@ function PublicEventPage() {
           <ReviewStep {...stepProps} onSubmit={() => void submit()} />
         )}
 
-        <p className='mt-6 text-center text-muted-foreground text-xs leading-relaxed'>
+        <p className="mt-6 text-center text-muted-foreground text-xs leading-relaxed">
           Etapa {step + 1} de {FORM_STEPS.length}: {current.title}. Nada é
           cobrado agora — este formulário só confirma o que já foi combinado.
         </p>

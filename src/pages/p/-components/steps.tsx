@@ -15,10 +15,10 @@ import {
   MapPin,
   Music2,
   Printer,
+  RefreshCw,
   Search,
   Sparkles,
   UserRound,
-  Wifi,
 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -44,6 +44,7 @@ import type {
   PublicBudgetDto,
   SubmitResultDto,
 } from "../-types";
+import { AnswerReview } from "./answer-review";
 import {
   AreaInput,
   BackButton,
@@ -56,8 +57,6 @@ import {
   hasError,
   OfferList,
   RadioCards,
-  ReviewBlock,
-  ReviewLine,
   SectionTitle,
   SelectInput,
   StepActions,
@@ -110,19 +109,6 @@ const OTHER_STYLE_ID = "outro";
 
 function optionsOr(fallback: Option[], options?: Option[]): Option[] {
   return options?.length ? options : fallback;
-}
-
-function labelOf(options: Option[] | undefined, id: string | null): string {
-  if (!id) {
-    return "—";
-  }
-  return options?.find((option) => option.id === id)?.label ?? id;
-}
-
-function addressLine(form: FormState): string {
-  const head = `${form.street}, ${form.streetNumber}`;
-  const tail = form.complement ? ` — ${form.complement}` : "";
-  return `${head}${tail} · ${form.district} · ${form.city}/${form.state}`;
 }
 
 /* ------------------------------------------------------------------ etapa 0 */
@@ -885,12 +871,10 @@ export function ReviewStep({
   errors,
   options,
   budget,
-  duration,
   saving,
   goTo,
   onSubmit,
 }: StepProps & { onSubmit: () => void }) {
-  const pj = form.contractorType === "PJ";
   const accepted = hasError(errors, "acceptance.accepted");
   return (
     <StepCard
@@ -909,6 +893,22 @@ export function ReviewStep({
       description="Última conferida antes de enviar para a André Sonorização."
       title="Confira antes de enviar"
     >
+      {budget.revisionRequest && (
+        <Callout icon={<RefreshCw className="h-4 w-4" />} tone="primary">
+          <p className="font-medium">
+            A André Sonorização pediu uma nova revisão desta resposta.
+          </p>
+          <p>
+            {budget.revisionRequest.reason?.trim() ||
+              "Precisamos ajustar um ponto antes de fechar o dia."}
+          </p>
+          <p className="text-muted-foreground text-xs">
+            Use os botões "Editar" abaixo para corrigir e envie de novo. O
+            aceite anterior foi arquivado; este reenvio registra um novo.
+          </p>
+        </Callout>
+      )}
+
       {errors.length > 0 && (
         <Alert variant="destructive">
           <AlertTitle>Faltam informações</AlertTitle>
@@ -919,113 +919,7 @@ export function ReviewStep({
         </Alert>
       )}
 
-      <ReviewBlock onEdit={() => goTo(1)} title="Quem está contratando">
-        <ReviewLine
-          label={pj ? "Razão social" : "Nome"}
-          value={form.name || "não informado"}
-        />
-        {pj && <ReviewLine label="Nome fantasia" value={form.tradeName} />}
-        <ReviewLine label={pj ? "CNPJ" : "CPF"} value={form.document} />
-        <ReviewLine label="E-mail" value={form.email} />
-        <ReviewLine label="WhatsApp" value={form.phone} />
-      </ReviewBlock>
-
-      <ReviewBlock onEdit={() => goTo(2)} title="Local do evento">
-        <ReviewLine label="Nome do local" value={form.venueName} />
-        <ReviewLine
-          label="Endereço"
-          value={form.street ? addressLine(form) : "não informado"}
-        />
-        <ReviewLine label="CEP" value={form.zipCode} />
-        <ReviewLine
-          label="Internet"
-          value={
-            <span className="inline-flex items-center gap-1.5">
-              <Wifi className="h-3.5 w-3.5 text-muted-foreground" />
-              {labelOf(
-                options?.internetAvailability,
-                form.internetAvailable || null,
-              )}
-            </span>
-          }
-        />
-        <ReviewLine
-          label="Energia"
-          value={labelOf(options?.powerSupply, form.powerSupply || null)}
-        />
-        <ReviewLine
-          label="Espaço"
-          value={labelOf(options?.venueSizes, form.venueSize || null)}
-        />
-        {form.accessNotes.length > 0 && (
-          <ReviewLine
-            label="Acesso e montagem"
-            value={form.accessNotes
-              .map((id) => labelOf(options?.accessNotes, id))
-              .join(" · ")}
-          />
-        )}
-      </ReviewBlock>
-
-      <ReviewBlock onEdit={() => goTo(3)} title="Horários">
-        <ReviewLine
-          label="Montagem"
-          value={form.setupTime || "não informado"}
-        />
-        <ReviewLine label="Início" value={form.startTime || "não informado"} />
-        <ReviewLine
-          label="Fim"
-          value={
-            form.endTime
-              ? `${form.endTime}${form.endsNextDay ? " (dia seguinte)" : ""}`
-              : "não informado"
-          }
-        />
-        <ReviewLine
-          label="Duração"
-          value={duration == null ? "—" : formatarDuracao(duration)}
-        />
-        {form.pickupTime && (
-          <ReviewLine label="Retirada" value={form.pickupTime} />
-        )}
-        {form.onSiteContactName && (
-          <ReviewLine
-            label="Contato no local"
-            value={`${form.onSiteContactName}${form.onSiteContactPhone ? ` · ${form.onSiteContactPhone}` : ""}`}
-          />
-        )}
-      </ReviewBlock>
-
-      <ReviewBlock onEdit={() => goTo(4)} title="Detalhes do evento">
-        <ReviewLine
-          label="Tipo"
-          value={labelOf(options?.eventTypes, form.eventType || null)}
-        />
-        <ReviewLine
-          label="Público"
-          value={form.guestCount ? `${form.guestCount} pessoas` : "—"}
-        />
-        <ReviewLine
-          label="Estilos"
-          value={
-            form.musicStyles.length
-              ? form.musicStyles
-                  .map((id) => labelOf(options?.musicStyles, id))
-                  .join(", ") +
-                (form.musicStyleOther ? ` · ${form.musicStyleOther}` : "")
-              : "não informado"
-          }
-        />
-        {form.requestedExtras.length > 0 && (
-          <ReviewLine
-            label="Extras"
-            value={form.requestedExtras
-              .map((id) => labelOf(options?.requestedExtras, id))
-              .join(" · ")}
-          />
-        )}
-        {form.notes && <ReviewLine label="Observações" value={form.notes} />}
-      </ReviewBlock>
+      <AnswerReview form={form} onEdit={goTo} options={options} />
 
       <ValueBlock
         caption={`Evento em ${eventDateLabel(budget.eventDate)}.`}
@@ -1145,6 +1039,13 @@ export function SuccessView({
           </p>
         )}
 
+        {result?.revisionResolved && (
+          <p className="mt-3 text-muted-foreground text-sm">
+            Sua resposta anterior foi arquivada: esta substitui o aceite
+            registrado antes.
+          </p>
+        )}
+
         <div className="mt-6 grid justify-center gap-2 text-muted-foreground text-sm">
           <p className="flex items-center justify-center gap-2">
             <MapPin className="h-4 w-4" />
@@ -1154,6 +1055,45 @@ export function SuccessView({
             <UserRound className="h-4 w-4" />
             André Sonorização · aluguel de som e karaokê
           </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------- rerevisão pedida */
+
+/**
+ * Recado do escritório para o cliente: a resposta anterior foi arquivada e o
+ * link voltou a aceitar envio. Aparece em qualquer etapa, porque o pedido é do
+ * evento inteiro — não de um campo isolado.
+ */
+export function RevisionNotice({
+  revision,
+  onOpen,
+}: {
+  revision: NonNullable<PublicBudgetDto["revisionRequest"]>;
+  onOpen: () => void;
+}) {
+  return (
+    <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+      <div className="flex items-start gap-3">
+        <RefreshCw className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+        <div className="space-y-1">
+          <p className="font-medium text-sm">
+            A André Sonorização pediu uma nova revisão desta resposta
+          </p>
+          <p className="text-sm leading-relaxed">
+            {revision.reason?.trim() ||
+              "Precisamos ajustar um ponto antes de fechar o dia."}
+          </p>
+          <p className="text-muted-foreground text-xs leading-relaxed">
+            Nada do que você já respondeu foi perdido. A versão anterior foi
+            arquivada e este mesmo link voltou a aceitar envio.
+          </p>
+          <Button className="mt-2" onClick={onOpen} size="sm" variant="outline">
+            Ver o que revisar
+          </Button>
         </div>
       </div>
     </div>

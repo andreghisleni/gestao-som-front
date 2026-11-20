@@ -36,6 +36,10 @@ export type SubmitPublicEventDetails200 = {
      * @type boolean
     */
     alreadySubmitted: boolean;
+    /**
+     * @type boolean
+    */
+    revisionResolved: boolean;
 };
 
 export type SubmitPublicEventDetails400 = {
