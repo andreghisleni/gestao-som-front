@@ -39,6 +39,45 @@ export type GetBudgetEventDetails200 = {
     */
     publicViewCount: number;
     /**
+     * @description Visitas do link público, com janela anti-recontagem
+     * @type object
+    */
+    viewing: {
+        /**
+         * @type number
+        */
+        visits: number;
+        /**
+         * @type number
+        */
+        devices: number;
+        /**
+         * @type number
+        */
+        trackedVisits: number;
+        /**
+         * @type number
+        */
+        windowMinutes: number;
+        firstViewAt: ((string | string | number) | null) | null;
+        lastViewAt: ((string | string | number) | null) | null;
+        /**
+         * @type array
+        */
+        byDevice: {
+            /**
+             * @type string
+            */
+            device: string;
+            /**
+             * @type number
+            */
+            views: number;
+            firstSeenAt: (string | string | number);
+            lastSeenAt: (string | string | number);
+        }[];
+    };
+    /**
      * @type boolean
     */
     submitted: boolean;

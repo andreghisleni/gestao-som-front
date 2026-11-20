@@ -26,6 +26,7 @@ import {
   useUpdateBudget,
 } from "@/http/generated";
 import { formatToBRL } from "@/utils/formatToBRL";
+import { ContractorFormCard } from "./-components/contractor-form-card";
 import { CreateItemDialog } from "./-components/create-item-dialog";
 import { CreateSectionDialog } from "./-components/create-section-dialog";
 import { EventAnswerCard } from "./-components/event-answer-card";
@@ -366,6 +367,9 @@ function BudgetDetailsPage() {
           {/* Página pública: link para o cliente + texto que ele lê */}
           {/** biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
           <PublicOfferCard budget={budget as any} budgetId={budgetId} />
+
+          {/* Pré-preenchimento do contratante: chega pronto no link do cliente */}
+          <ContractorFormCard budgetId={budgetId} />
 
           {/* Resposta do formulário + histórico de revisões pedidas */}
           <EventAnswerCard budgetId={budgetId} />

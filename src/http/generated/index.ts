@@ -37,6 +37,7 @@ export type { SavePublicEventDetailsMutationKey } from "./hooks/useSavePublicEve
 export type { SubmitPublicEventDetailsMutationKey } from "./hooks/useSubmitPublicEventDetails.ts";
 export type { ToggleShowInBudgetPrintMutationKey } from "./hooks/useToggleShowInBudgetPrint.ts";
 export type { UpdateBudgetMutationKey } from "./hooks/useUpdateBudget.ts";
+export type { UpdateBudgetEventContractorMutationKey } from "./hooks/useUpdateBudgetEventContractor.ts";
 export type { UpdateBudgetItemMutationKey } from "./hooks/useUpdateBudgetItem.ts";
 export type { UpdateBudgetOfferItemMutationKey } from "./hooks/useUpdateBudgetOfferItem.ts";
 export type { UpdateBudgetSectionMutationKey } from "./hooks/useUpdateBudgetSection.ts";
@@ -71,6 +72,7 @@ export type { SavePublicEventDetailsPathParams, SavePublicEventDetails200, SaveP
 export type { SubmitPublicEventDetailsPathParams, SubmitPublicEventDetails200, SubmitPublicEventDetails400, SubmitPublicEventDetails404, SubmitPublicEventDetailsMutationRequest, SubmitPublicEventDetailsMutationResponse, SubmitPublicEventDetailsMutation } from "./types/SubmitPublicEventDetails.ts";
 export type { ToggleShowInBudgetPrintPathParams, ToggleShowInBudgetPrint201, ToggleShowInBudgetPrint400, ToggleShowInBudgetPrint404, ToggleShowInBudgetPrintMutationResponse, ToggleShowInBudgetPrintMutation } from "./types/ToggleShowInBudgetPrint.ts";
 export type { UpdateBudgetPathParams, UpdateBudget201, UpdateBudget404, UpdateBudgetMutationRequest, UpdateBudgetMutationResponse, UpdateBudgetMutation } from "./types/UpdateBudget.ts";
+export type { UpdateBudgetEventContractorPathParams, UpdateBudgetEventContractor200, UpdateBudgetEventContractor400, UpdateBudgetEventContractor404, UpdateBudgetEventContractorMutationRequest, UpdateBudgetEventContractorMutationResponse, UpdateBudgetEventContractorMutation } from "./types/UpdateBudgetEventContractor.ts";
 export type { UpdateBudgetItemPathParams, UpdateBudgetItem201, UpdateBudgetItem400, UpdateBudgetItem404, UpdateBudgetItemMutationRequest, UpdateBudgetItemMutationResponse, UpdateBudgetItemMutation } from "./types/UpdateBudgetItem.ts";
 export type { UpdateBudgetOfferItemPathParams, UpdateBudgetOfferItem201, UpdateBudgetOfferItem404, UpdateBudgetOfferItemMutationRequest, UpdateBudgetOfferItemMutationResponse, UpdateBudgetOfferItemMutation } from "./types/UpdateBudgetOfferItem.ts";
 export type { UpdateBudgetSectionPathParams, UpdateBudgetSection201, UpdateBudgetSection404, UpdateBudgetSectionMutationRequest, UpdateBudgetSectionMutationResponse, UpdateBudgetSectionMutation } from "./types/UpdateBudgetSection.ts";
@@ -115,6 +117,7 @@ export { savePublicEventDetailsMutationKey, savePublicEventDetails, useSavePubli
 export { submitPublicEventDetailsMutationKey, submitPublicEventDetails, useSubmitPublicEventDetails } from "./hooks/useSubmitPublicEventDetails.ts";
 export { toggleShowInBudgetPrintMutationKey, toggleShowInBudgetPrint, useToggleShowInBudgetPrint } from "./hooks/useToggleShowInBudgetPrint.ts";
 export { updateBudgetMutationKey, updateBudget, useUpdateBudget } from "./hooks/useUpdateBudget.ts";
+export { updateBudgetEventContractorMutationKey, updateBudgetEventContractor, useUpdateBudgetEventContractor } from "./hooks/useUpdateBudgetEventContractor.ts";
 export { updateBudgetItemMutationKey, updateBudgetItem, useUpdateBudgetItem } from "./hooks/useUpdateBudgetItem.ts";
 export { updateBudgetOfferItemMutationKey, updateBudgetOfferItem, useUpdateBudgetOfferItem } from "./hooks/useUpdateBudgetOfferItem.ts";
 export { updateBudgetSectionMutationKey, updateBudgetSection, useUpdateBudgetSection } from "./hooks/useUpdateBudgetSection.ts";

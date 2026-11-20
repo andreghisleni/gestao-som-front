@@ -37,6 +37,7 @@ export type { SavePublicEventDetailsMutationKey } from "./useSavePublicEventDeta
 export type { SubmitPublicEventDetailsMutationKey } from "./useSubmitPublicEventDetails.ts";
 export type { ToggleShowInBudgetPrintMutationKey } from "./useToggleShowInBudgetPrint.ts";
 export type { UpdateBudgetMutationKey } from "./useUpdateBudget.ts";
+export type { UpdateBudgetEventContractorMutationKey } from "./useUpdateBudgetEventContractor.ts";
 export type { UpdateBudgetItemMutationKey } from "./useUpdateBudgetItem.ts";
 export type { UpdateBudgetOfferItemMutationKey } from "./useUpdateBudgetOfferItem.ts";
 export type { UpdateBudgetSectionMutationKey } from "./useUpdateBudgetSection.ts";
@@ -81,6 +82,7 @@ export { savePublicEventDetailsMutationKey, savePublicEventDetails, useSavePubli
 export { submitPublicEventDetailsMutationKey, submitPublicEventDetails, useSubmitPublicEventDetails } from "./useSubmitPublicEventDetails.ts";
 export { toggleShowInBudgetPrintMutationKey, toggleShowInBudgetPrint, useToggleShowInBudgetPrint } from "./useToggleShowInBudgetPrint.ts";
 export { updateBudgetMutationKey, updateBudget, useUpdateBudget } from "./useUpdateBudget.ts";
+export { updateBudgetEventContractorMutationKey, updateBudgetEventContractor, useUpdateBudgetEventContractor } from "./useUpdateBudgetEventContractor.ts";
 export { updateBudgetItemMutationKey, updateBudgetItem, useUpdateBudgetItem } from "./useUpdateBudgetItem.ts";
 export { updateBudgetOfferItemMutationKey, updateBudgetOfferItem, useUpdateBudgetOfferItem } from "./useUpdateBudgetOfferItem.ts";
 export { updateBudgetSectionMutationKey, updateBudgetSection, useUpdateBudgetSection } from "./useUpdateBudgetSection.ts";
