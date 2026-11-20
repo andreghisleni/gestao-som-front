@@ -16,6 +16,11 @@ const statusMap: Record<
   DRAFT: "secondary",
   APPROVED: "default",
   REJECTED: "destructive",
+  CONFIRMED: "default",
+  // Proposta enviada pela página pública aguardando o cliente.
+  SENT: "outline",
+  // Cliente confirmou os dados do evento.
+  DETAILS_SENT: "default",
 };
 
 export type Budget = GetBudgets200["data"][0];

@@ -1,52 +1,61 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { format } from "date-fns";
-import { Loader2, Printer, Save } from "lucide-react";
-import { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQueryClient } from '@tanstack/react-query';
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { format } from 'date-fns';
+import { Loader2, Printer, Save } from 'lucide-react';
+import { useEffect } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Separator } from '@/components/ui/separator';
 import {
   getBudgetByIdQueryKey,
   getBudgetsQueryKey,
   useGetBudgetById,
   useUpdateBudget,
-} from "@/http/generated";
-import { formatToBRL } from "@/utils/formatToBRL";
-import { CreateItemDialog } from "./-components/create-item-dialog";
-import { CreateSectionDialog } from "./-components/create-section-dialog";
-import { DeleteItemButton, EditItemDialog, ToggleShowInBudgetPrintItemButton } from "./-components/item-actions";
+} from '@/http/generated';
+import { formatToBRL } from '@/utils/formatToBRL';
+import { CreateItemDialog } from './-components/create-item-dialog';
+import { CreateSectionDialog } from './-components/create-section-dialog';
+import {
+  DeleteItemButton,
+  EditItemDialog,
+  ToggleShowInBudgetPrintItemButton,
+} from './-components/item-actions';
+import { PublicOfferCard } from './-components/public-offer-card';
 import {
   DeleteSectionDialog,
   EditSectionDialog,
-} from "./-components/section-actions";
+} from './-components/section-actions';
 
-export const Route = createFileRoute("/_app/rental/budgets/$budgetId/")({
+export const Route = createFileRoute('/_app/rental/budgets/$budgetId/')({
   component: BudgetDetailsPage,
 });
 
 // Status Colors
 const statusMap: Record<
   string,
-  "default" | "secondary" | "destructive" | "outline"
+  'default' | 'secondary' | 'destructive' | 'outline'
 > = {
-  DRAFT: "secondary",
-  APPROVED: "default",
-  REJECTED: "destructive",
-  CONFIRMED: "default",
+  DRAFT: 'secondary',
+  APPROVED: 'default',
+  REJECTED: 'destructive',
+  CONFIRMED: 'default',
+  // Envio da proposta ao cliente pela página pública.
+  SENT: 'outline',
+  // Cliente confirmou contratante, local, horários e aceite do valor.
+  DETAILS_SENT: 'default',
 };
 
 // Schema apenas para os campos editáveis desta tela (Totais)
@@ -98,10 +107,10 @@ function BudgetDetailsPage() {
         await queryClient.invalidateQueries({
           queryKey: getBudgetsQueryKey(),
         });
-        toast.success("Valores atualizados com sucesso!");
+        toast.success('Valores atualizados com sucesso!');
       },
       onError: (err) =>
-        toast.error("Erro ao salvar", { description: err.message }),
+        toast.error('Erro ao salvar', { description: err.message }),
     },
   });
 
@@ -121,7 +130,7 @@ function BudgetDetailsPage() {
   // Calculadora de Frete
   useEffect(() => {
     if (watched.distanceKm && watched.pricePerKm) {
-      form.setValue("transportCost", watched.distanceKm * watched.pricePerKm);
+      form.setValue('transportCost', watched.distanceKm * watched.pricePerKm);
     }
   }, [watched.distanceKm, watched.pricePerKm, form]);
 
@@ -156,7 +165,7 @@ function BudgetDetailsPage() {
             <span>
               {format(new Date(budget.eventDate), "dd/MM/yyyy 'às' HH:mm")}
             </span>
-            <Badge variant={statusMap[budget.status] || "outline"}>
+            <Badge variant={statusMap[budget.status] || 'outline'}>
               {budget.status}
             </Badge>
           </div>
@@ -295,7 +304,7 @@ function BudgetDetailsPage() {
                         </th>
                         <th className="w-20 px-4 py-2 text-right font-medium">
                           Ações
-                        </th>{" "}
+                        </th>{' '}
                         {/* Nova Coluna */}
                       </tr>
                     </thead>
@@ -332,10 +341,10 @@ function BudgetDetailsPage() {
                               />
                               <EditItemDialog
                                 itemData={{
-                                  name: item.equipment?.name || "Item",
+                                  name: item.equipment?.name || 'Item',
                                   quantity: item.quantity,
                                   unitPrice: item.unitPrice,
-                                  description: item.description || "",
+                                  description: item.description || '',
                                 }}
                                 itemId={item.id}
                               />
@@ -350,6 +359,10 @@ function BudgetDetailsPage() {
               </CardContent>
             </Card>
           ))}
+
+          {/* Página pública: link para o cliente + texto que ele lê */}
+          {/** biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+          <PublicOfferCard budget={budget as any} budgetId={budgetId} />
         </div>
 
         {/* COLUNA DIREITA: RESUMO EDITÁVEL (1/3 da tela) */}

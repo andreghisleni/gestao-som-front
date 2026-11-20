@@ -111,6 +111,35 @@ export type GetBudgetById200 = {
             description: (string | null) | null;
         }[];
     }[];
+    /**
+     * @type array
+    */
+    offerItems: {
+        /**
+         * @type string
+        */
+        id: string;
+        /**
+         * @type string
+        */
+        name: string;
+        detail: (string | null) | null;
+        /**
+         * @type string
+        */
+        source: string;
+        /**
+         * @type number
+        */
+        order: number;
+    }[];
+    publicToken: (string | null) | null;
+    publicTokenAt: ((string | string | number) | null) | null;
+    publicTokenRevoked: ((string | string | number) | null) | null;
+    /**
+     * @type number
+    */
+    publicViewCount: number;
 };
 
 export type GetBudgetById404 = {

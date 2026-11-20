@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './pages/__root'
 import { Route as AuthLayoutRouteImport } from './pages/_auth/layout'
 import { Route as AppLayoutRouteImport } from './pages/_app/layout'
 import { Route as IndexRouteImport } from './pages/index'
+import { Route as PTokenRouteImport } from './pages/p/$token'
 import { Route as AuthSignUpRouteImport } from './pages/_auth/sign-up'
 import { Route as AuthSignInRouteImport } from './pages/_auth/sign-in'
 import { Route as AuthForgotPasswordRouteImport } from './pages/_auth/forgot-password'
@@ -36,6 +37,11 @@ const AppLayoutRoute = AppLayoutRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PTokenRoute = PTokenRouteImport.update({
+  id: '/p/$token',
+  path: '/p/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthSignUpRoute = AuthSignUpRouteImport.update({
@@ -110,6 +116,7 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
+  '/p/$token': typeof PTokenRoute
   '/reset-password/$token': typeof AuthResetPasswordTokenRoute
   '/rental/budgets': typeof AppRentalBudgetsIndexRoute
   '/rental/categories': typeof AppRentalCategoriesIndexRoute
@@ -125,6 +132,7 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof AuthForgotPasswordRoute
   '/sign-in': typeof AuthSignInRoute
   '/sign-up': typeof AuthSignUpRoute
+  '/p/$token': typeof PTokenRoute
   '/reset-password/$token': typeof AuthResetPasswordTokenRoute
   '/rental/budgets': typeof AppRentalBudgetsIndexRoute
   '/rental/categories': typeof AppRentalCategoriesIndexRoute
@@ -143,6 +151,7 @@ export interface FileRoutesById {
   '/_auth/forgot-password': typeof AuthForgotPasswordRoute
   '/_auth/sign-in': typeof AuthSignInRoute
   '/_auth/sign-up': typeof AuthSignUpRoute
+  '/p/$token': typeof PTokenRoute
   '/_auth/reset-password/$token': typeof AuthResetPasswordTokenRoute
   '/_app/rental/budgets/': typeof AppRentalBudgetsIndexRoute
   '/_app/rental/categories/': typeof AppRentalCategoriesIndexRoute
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/sign-in'
     | '/sign-up'
+    | '/p/$token'
     | '/reset-password/$token'
     | '/rental/budgets'
     | '/rental/categories'
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/sign-in'
     | '/sign-up'
+    | '/p/$token'
     | '/reset-password/$token'
     | '/rental/budgets'
     | '/rental/categories'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '/_auth/forgot-password'
     | '/_auth/sign-in'
     | '/_auth/sign-up'
+    | '/p/$token'
     | '/_auth/reset-password/$token'
     | '/_app/rental/budgets/'
     | '/_app/rental/categories/'
@@ -205,6 +217,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppLayoutRoute: typeof AppLayoutRouteWithChildren
   AuthLayoutRoute: typeof AuthLayoutRouteWithChildren
+  PTokenRoute: typeof PTokenRoute
   WRentalBudgetsBudgetIdPrintRoute: typeof WRentalBudgetsBudgetIdPrintRoute
   WRentalBudgetsBudgetIdPrintFullRoute: typeof WRentalBudgetsBudgetIdPrintFullRoute
 }
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/p/$token': {
+      id: '/p/$token'
+      path: '/p/$token'
+      fullPath: '/p/$token'
+      preLoaderRoute: typeof PTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/sign-up': {
@@ -363,6 +383,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppLayoutRoute: AppLayoutRouteWithChildren,
   AuthLayoutRoute: AuthLayoutRouteWithChildren,
+  PTokenRoute: PTokenRoute,
   WRentalBudgetsBudgetIdPrintRoute: WRentalBudgetsBudgetIdPrintRoute,
   WRentalBudgetsBudgetIdPrintFullRoute: WRentalBudgetsBudgetIdPrintFullRoute,
 }
