@@ -36,6 +36,7 @@ import {
   ToggleShowInBudgetPrintItemButton,
 } from "./-components/item-actions";
 import { PublicOfferCard } from "./-components/public-offer-card";
+import { ReceiptButton } from "./-components/receipt-button";
 import {
   DeleteSectionDialog,
   EditSectionDialog,
@@ -193,6 +194,7 @@ function BudgetDetailsPage() {
               <Printer className="mr-2 h-4 w-4" /> Imprimir (Detalhado)
             </Link>
           </Button>
+          <ReceiptButton budget={budget} budgetId={budgetId} />
         </div>
       </div>
       {/* CARDS */}
