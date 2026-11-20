@@ -19,31 +19,31 @@ import {
   Sparkles,
   UserRound,
   Wifi,
-} from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { formatarDuracao } from '@/utils/brDocuments';
-import { formatToBRL } from '@/utils/formatToBRL';
+} from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { formatarDuracao } from "@/utils/brDocuments";
+import { formatToBRL } from "@/utils/formatToBRL";
 import {
   inputCepMask,
   inputCnpjMask,
   inputCpfMask,
   inputPhoneMask,
-} from '@/utils/inputMasks';
-import type { FormState } from '../-form';
+} from "@/utils/inputMasks";
+import type { FormState } from "../-form";
 import {
   digitsOnly,
   eventDateLabel,
   firstName,
   shortDateLabel,
-} from '../-form';
+} from "../-form";
 import type {
   FormOptionsDto,
   Option,
   PublicBudgetDto,
   SubmitResultDto,
-} from '../-types';
+} from "../-types";
 import {
   AreaInput,
   BackButton,
@@ -65,7 +65,7 @@ import {
   TextInput,
   TimelineRow,
   ValueBlock,
-} from './public-ui';
+} from "./public-ui";
 
 /** Tudo que uma etapa precisa receber do container. */
 export type StepProps = {
@@ -85,14 +85,14 @@ export type StepProps = {
 
 const CONTRACTOR_TYPES: Option[] = [
   {
-    id: 'PF',
-    label: 'Pessoa física',
-    hint: 'Você contratando para o seu evento',
+    id: "PF",
+    label: "Pessoa física",
+    hint: "Você contratando para o seu evento",
   },
   {
-    id: 'PJ',
-    label: 'Pessoa jurídica',
-    hint: 'Empresa, sindicato ou produtora',
+    id: "PJ",
+    label: "Pessoa jurídica",
+    hint: "Empresa, sindicato ou produtora",
   },
 ];
 
@@ -100,26 +100,28 @@ const CONTRACTOR_TYPES: Option[] = [
 // (`~/src/http/routes/public/options/get-event-form-options-route.ts`), usados
 // só se a consulta de opções ainda não tiver respondido.
 const INTERNET_FALLBACK: Option[] = [
-  { id: 'yes', label: 'Sim', hint: 'Wi-fi ou cabo funcionando' },
-  { id: 'no', label: 'Não', hint: 'Sem rede no salão' },
-  { id: 'to_verify', label: 'Não sei', hint: 'Preciso confirmar' },
+  { id: "yes", label: "Sim", hint: "Wi-fi ou cabo funcionando" },
+  { id: "no", label: "Não", hint: "Sem rede no salão" },
+  { id: "to_verify", label: "Não sei", hint: "Preciso confirmar" },
 ];
 
 /** Estilo que abre o campo livre de repertório. */
-const OTHER_STYLE_ID = 'outro';
+const OTHER_STYLE_ID = "outro";
 
 function optionsOr(fallback: Option[], options?: Option[]): Option[] {
   return options?.length ? options : fallback;
 }
 
 function labelOf(options: Option[] | undefined, id: string | null): string {
-  if (!id) { return '—'; }
+  if (!id) {
+    return "—";
+  }
   return options?.find((option) => option.id === id)?.label ?? id;
 }
 
 function addressLine(form: FormState): string {
   const head = `${form.street}, ${form.streetNumber}`;
-  const tail = form.complement ? ` — ${form.complement}` : '';
+  const tail = form.complement ? ` — ${form.complement}` : "";
   return `${head}${tail} · ${form.district} · ${form.city}/${form.state}`;
 }
 
@@ -170,7 +172,7 @@ export function ProposalStep({ budget, next }: StepProps) {
           {budget.offerItems.length ? (
             <OfferList items={budget.offerItems} section="Pacote contratado" />
           ) : (
-            <p className='rounded-lg border border-dashed p-4 text-muted-foreground text-sm'>
+            <p className="rounded-lg border border-dashed p-4 text-muted-foreground text-sm">
               Os itens do pacote ainda não foram detalhados nesta proposta.
             </p>
           )}
@@ -203,7 +205,7 @@ export function ContractorStep({
   goTo,
   next,
 }: StepProps) {
-  const pj = form.contractorType === 'PJ';
+  const pj = form.contractorType === "PJ";
   return (
     <StepCard
       actions={
@@ -224,7 +226,7 @@ export function ContractorStep({
       <Field label="Tipo de contratante" required>
         <RadioCards
           namePrefix="contractor-type"
-          onChange={(value) => setField('contractorType', value as 'PF' | 'PJ')}
+          onChange={(value) => setField("contractorType", value as "PF" | "PJ")}
           options={optionsOr(CONTRACTOR_TYPES, options?.contractorTypes)}
           value={form.contractorType}
         />
@@ -232,74 +234,74 @@ export function ContractorStep({
 
       <Grid2>
         <Field
-          error={hasError(errors, 'contractor.name')}
+          error={hasError(errors, "contractor.name")}
           htmlFor="f-name"
-          label={pj ? 'Razão social' : 'Nome completo'}
+          label={pj ? "Razão social" : "Nome completo"}
           required
         >
           <TextInput
             id="f-name"
-            invalid={hasError(errors, 'contractor.name')}
-            onChange={(value) => setField('name', value)}
-            placeholder={pj ? 'Nome registrado da empresa' : 'Nome e sobrenome'}
+            invalid={hasError(errors, "contractor.name")}
+            onChange={(value) => setField("name", value)}
+            placeholder={pj ? "Nome registrado da empresa" : "Nome e sobrenome"}
             value={form.name}
           />
           <FieldError
             message="Informe o nome completo."
-            show={hasError(errors, 'contractor.name')}
+            show={hasError(errors, "contractor.name")}
           />
         </Field>
 
         {pj && (
           <Field
-            error={hasError(errors, 'contractor.tradeName')}
+            error={hasError(errors, "contractor.tradeName")}
             htmlFor="f-trade"
             label="Nome fantasia"
             required
           >
             <TextInput
               id="f-trade"
-              invalid={hasError(errors, 'contractor.tradeName')}
-              onChange={(value) => setField('tradeName', value)}
+              invalid={hasError(errors, "contractor.tradeName")}
+              onChange={(value) => setField("tradeName", value)}
               placeholder="Como sua empresa é conhecida"
               value={form.tradeName}
             />
             <FieldError
               message="Informe o nome fantasia."
-              show={hasError(errors, 'contractor.tradeName')}
+              show={hasError(errors, "contractor.tradeName")}
             />
           </Field>
         )}
 
         <Field
-          error={hasError(errors, 'contractor.document')}
+          error={hasError(errors, "contractor.document")}
           hint="Só os números: a gente separa com a máscara certa."
           htmlFor="f-document"
-          label={pj ? 'CNPJ' : 'CPF'}
+          label={pj ? "CNPJ" : "CPF"}
           required
         >
           <TextInput
             id="f-document"
             inputMode="numeric"
-            invalid={hasError(errors, 'contractor.document')}
+            invalid={hasError(errors, "contractor.document")}
             maxLength={pj ? 18 : 14}
             onChange={(value) =>
               setField(
-                'document',
-                pj ? inputCnpjMask(value) : inputCpfMask(value)
+                "document",
+                pj ? inputCnpjMask(value) : inputCpfMask(value),
               )
             }
-            placeholder={pj ? '00.000.000/0000-00' : '000.000.000-00'}
+            placeholder={pj ? "00.000.000/0000-00" : "000.000.000-00"}
             value={form.document}
           />
           <FieldError
-            message={pj ? 'CNPJ inválido.' : 'CPF inválido.'}
-            show={hasError(errors, 'contractor.document')}
+            message={pj ? "CNPJ inválido." : "CPF inválido."}
+            show={hasError(errors, "contractor.document")}
           />
         </Field>
 
         <Field
-          error={hasError(errors, 'contractor.email')}
+          error={hasError(errors, "contractor.email")}
           htmlFor="f-email"
           label="E-mail"
           required
@@ -307,19 +309,19 @@ export function ContractorStep({
           <TextInput
             id="f-email"
             inputMode="email"
-            invalid={hasError(errors, 'contractor.email')}
-            onChange={(value) => setField('email', value)}
+            invalid={hasError(errors, "contractor.email")}
+            onChange={(value) => setField("email", value)}
             placeholder="voce@exemplo.com.br"
             value={form.email}
           />
           <FieldError
             message="E-mail inválido."
-            show={hasError(errors, 'contractor.email')}
+            show={hasError(errors, "contractor.email")}
           />
         </Field>
 
         <Field
-          error={hasError(errors, 'contractor.phone')}
+          error={hasError(errors, "contractor.phone")}
           hint="É por esse WhatsApp que confirmamos os detalhes do dia."
           htmlFor="f-phone"
           label="WhatsApp"
@@ -328,15 +330,15 @@ export function ContractorStep({
           <TextInput
             id="f-phone"
             inputMode="tel"
-            invalid={hasError(errors, 'contractor.phone')}
+            invalid={hasError(errors, "contractor.phone")}
             maxLength={15}
-            onChange={(value) => setField('phone', inputPhoneMask(value))}
+            onChange={(value) => setField("phone", inputPhoneMask(value))}
             placeholder="(49) 9 9999-9999"
             value={form.phone}
           />
           <FieldError
             message="Informe um WhatsApp válido com DDD."
-            show={hasError(errors, 'contractor.phone')}
+            show={hasError(errors, "contractor.phone")}
           />
         </Field>
       </Grid2>
@@ -378,7 +380,7 @@ export function VenueStep({
       <Field htmlFor="f-venue" label="Nome do local" optional>
         <TextInput
           id="f-venue"
-          onChange={(value) => setField('venueName', value)}
+          onChange={(value) => setField("venueName", value)}
           placeholder="Salão, clube, chácara, praça…"
           value={form.venueName}
         />
@@ -388,8 +390,8 @@ export function VenueStep({
         <SectionTitle>Endereço</SectionTitle>
         <Grid2 className="sm:grid-cols-[minmax(0,14rem)_1fr]">
           <Field
-            error={hasError(errors, 'venue.zipCode')}
-            hint={cepMessage || 'Preenchemos o resto automaticamente.'}
+            error={hasError(errors, "venue.zipCode")}
+            hint={cepMessage || "Preenchemos o resto automaticamente."}
             htmlFor="f-zip"
             label="CEP"
             required
@@ -398,9 +400,9 @@ export function VenueStep({
               <TextInput
                 id="f-zip"
                 inputMode="numeric"
-                invalid={hasError(errors, 'venue.zipCode')}
+                invalid={hasError(errors, "venue.zipCode")}
                 maxLength={9}
-                onChange={(value) => setField('zipCode', inputCepMask(value))}
+                onChange={(value) => setField("zipCode", inputCepMask(value))}
                 placeholder="00000-000"
                 value={form.zipCode}
               />
@@ -417,20 +419,20 @@ export function VenueStep({
             </div>
             <FieldError
               message="CEP inválido."
-              show={hasError(errors, 'venue.zipCode')}
+              show={hasError(errors, "venue.zipCode")}
             />
           </Field>
 
           <Field
-            error={hasError(errors, 'venue.street')}
+            error={hasError(errors, "venue.street")}
             htmlFor="f-street"
             label="Logradouro"
             required
           >
             <TextInput
               id="f-street"
-              invalid={hasError(errors, 'venue.street')}
-              onChange={(value) => setField('street', value)}
+              invalid={hasError(errors, "venue.street")}
+              onChange={(value) => setField("street", value)}
               placeholder="Rua, avenida ou estrada"
               value={form.street}
             />
@@ -439,74 +441,74 @@ export function VenueStep({
 
         <Grid2>
           <Field
-            error={hasError(errors, 'venue.streetNumber')}
+            error={hasError(errors, "venue.streetNumber")}
             htmlFor="f-number"
             label="Número"
             required
           >
             <TextInput
               id="f-number"
-              invalid={hasError(errors, 'venue.streetNumber')}
-              onChange={(value) => setField('streetNumber', value)}
+              invalid={hasError(errors, "venue.streetNumber")}
+              onChange={(value) => setField("streetNumber", value)}
               placeholder="Número / s/n"
               value={form.streetNumber}
             />
             <FieldError
               message="Informe o número."
-              show={hasError(errors, 'venue.streetNumber')}
+              show={hasError(errors, "venue.streetNumber")}
             />
           </Field>
 
           <Field htmlFor="f-complement" label="Complemento" optional>
             <TextInput
               id="f-complement"
-              onChange={(value) => setField('complement', value)}
+              onChange={(value) => setField("complement", value)}
               placeholder="Salão 2, fundos, próximo ao…"
               value={form.complement}
             />
           </Field>
 
           <Field
-            error={hasError(errors, 'venue.district')}
+            error={hasError(errors, "venue.district")}
             htmlFor="f-district"
             label="Bairro"
             required
           >
             <TextInput
               id="f-district"
-              invalid={hasError(errors, 'venue.district')}
-              onChange={(value) => setField('district', value)}
+              invalid={hasError(errors, "venue.district")}
+              onChange={(value) => setField("district", value)}
               placeholder="Bairro"
               value={form.district}
             />
           </Field>
 
           <Field
-            error={hasError(errors, 'venue.city')}
+            error={hasError(errors, "venue.city")}
             htmlFor="f-city"
             label="Cidade"
             required
           >
             <TextInput
               id="f-city"
-              invalid={hasError(errors, 'venue.city')}
-              onChange={(value) => setField('city', value)}
+              invalid={hasError(errors, "venue.city")}
+              onChange={(value) => setField("city", value)}
               placeholder="Cidade"
               value={form.city}
             />
           </Field>
 
           <Field
-            error={hasError(errors, 'venue.state')}
+            error={hasError(errors, "venue.state")}
             htmlFor="f-state"
             label="Estado (UF)"
             required
           >
             <TextInput
               id="f-state"
-              invalid={hasError(errors, 'venue.state')}
+              invalid={hasError(errors, "venue.state")}
               maxLength={2}
-              onChange={(value) => setField('state', value.toUpperCase())}
+              onChange={(value) => setField("state", value.toUpperCase())}
               placeholder="SC"
               value={form.state}
             />
@@ -515,7 +517,7 @@ export function VenueStep({
           <Field htmlFor="f-reference" label="Ponto de referência" optional>
             <TextInput
               id="f-reference"
-              onChange={(value) => setField('reference', value)}
+              onChange={(value) => setField("reference", value)}
               placeholder="Portaria, entrada de serviço…"
               value={form.reference}
             />
@@ -526,28 +528,27 @@ export function VenueStep({
       <div className="space-y-2">
         <SectionTitle>Estrutura do local</SectionTitle>
         <Field
-          error={hasError(errors, 'venue.internetAvailable')}
-          hint="Ajuda a decidir se levamos internet própria para o karaokê."
+          error={hasError(errors, "venue.internetAvailable")}
           label="Tem internet no local?"
           required
         >
           <RadioCards
             columns={3}
             namePrefix="f-internet"
-            onChange={(value) => setField('internetAvailable', value)}
+            onChange={(value) => setField("internetAvailable", value)}
             options={optionsOr(
               INTERNET_FALLBACK,
-              options?.internetAvailability
+              options?.internetAvailability,
             )}
             value={form.internetAvailable}
           />
           <FieldError
             message="Marque uma opção."
-            show={hasError(errors, 'venue.internetAvailable')}
+            show={hasError(errors, "venue.internetAvailable")}
           />
         </Field>
 
-        {form.internetAvailable === 'yes' && (
+        {form.internetAvailable === "yes" && (
           <Field
             htmlFor="f-internet-detail"
             label="Detalhe da internet"
@@ -555,7 +556,7 @@ export function VenueStep({
           >
             <TextInput
               id="f-internet-detail"
-              onChange={(value) => setField('internetDetail', value)}
+              onChange={(value) => setField("internetDetail", value)}
               placeholder="Operadora, velocidade, onde fica o roteador"
               value={form.internetDetail}
             />
@@ -566,7 +567,7 @@ export function VenueStep({
           <Field htmlFor="f-power" label="Energia no local" optional>
             <SelectInput
               id="f-power"
-              onChange={(value) => setField('powerSupply', value)}
+              onChange={(value) => setField("powerSupply", value)}
               options={options?.powerSupply}
               placeholder="Selecione"
               value={form.powerSupply}
@@ -575,7 +576,7 @@ export function VenueStep({
           <Field htmlFor="f-size" label="Tamanho do espaço" optional>
             <SelectInput
               id="f-size"
-              onChange={(value) => setField('venueSize', value)}
+              onChange={(value) => setField("venueSize", value)}
               options={options?.venueSizes}
               placeholder="Selecione"
               value={form.venueSize}
@@ -592,10 +593,10 @@ export function VenueStep({
         <CheckGrid
           onToggle={(id, checked) =>
             setField(
-              'accessNotes',
+              "accessNotes",
               checked
                 ? [...form.accessNotes, id]
-                : form.accessNotes.filter((item) => item !== id)
+                : form.accessNotes.filter((item) => item !== id),
             )
           }
           options={optionsOr([], options?.accessNotes)}
@@ -639,8 +640,8 @@ export function ScheduleStep({
         <TimelineRow
           htmlFor="f-setup"
           icon={<Building2 className="h-4 w-4" />}
-          invalid={hasError(errors, 'schedule.setupTime')}
-          onChange={(value) => setField('setupTime', value)}
+          invalid={hasError(errors, "schedule.setupTime")}
+          onChange={(value) => setField("setupTime", value)}
           span="Chegada da equipe para montar som, luz e karaokê."
           title="Início da montagem"
           value={form.setupTime}
@@ -648,8 +649,8 @@ export function ScheduleStep({
         <TimelineRow
           htmlFor="f-start"
           icon={<Music2 className="h-4 w-4" />}
-          invalid={hasError(errors, 'schedule.startTime')}
-          onChange={(value) => setField('startTime', value)}
+          invalid={hasError(errors, "schedule.startTime")}
+          onChange={(value) => setField("startTime", value)}
           span="Quando o som começa a tocar para os convidados."
           title="Início do evento"
           value={form.startTime}
@@ -657,25 +658,25 @@ export function ScheduleStep({
         <TimelineRow
           htmlFor="f-end"
           icon={<Clock3 className="h-4 w-4" />}
-          invalid={hasError(errors, 'schedule.endTime')}
-          onChange={(value) => setField('endTime', value)}
+          invalid={hasError(errors, "schedule.endTime")}
+          onChange={(value) => setField("endTime", value)}
           span="Quando encerramos a parte musical."
           title="Fim do evento"
           trailing={
             <Button
               aria-pressed={form.endsNextDay}
               className="shrink-0 gap-1.5"
-              onClick={() => setField('endsNextDay', !form.endsNextDay)}
+              onClick={() => setField("endsNextDay", !form.endsNextDay)}
               size="sm"
-              variant={form.endsNextDay ? 'default' : 'outline'}
+              variant={form.endsNextDay ? "default" : "outline"}
             >
               Vira a noite
             </Button>
           }
           value={form.endTime}
         />
-        {hasError(errors, 'schedule.endTime') && (
-          <p className='font-medium text-destructive text-xs'>
+        {hasError(errors, "schedule.endTime") && (
+          <p className="font-medium text-destructive text-xs">
             Confira o intervalo: o fim precisa ser depois do início (marque
             &quot;vira a noite&quot; se terminar no dia seguinte).
           </p>
@@ -684,17 +685,17 @@ export function ScheduleStep({
 
       <div className="grid items-center gap-2 rounded-lg border bg-primary/5 p-3 sm:grid-cols-[1fr_auto]">
         <div>
-          <p className='font-semibold text-[11px] text-muted-foreground uppercase tracking-wider'>
+          <p className="font-semibold text-[11px] text-muted-foreground uppercase tracking-wider">
             Duração prevista
           </p>
-          <p className='text-muted-foreground text-sm'>
+          <p className="text-muted-foreground text-sm">
             {form.startTime && form.endTime
-              ? 'Calculada a partir do início e do fim informados.'
-              : 'Preencha o início e o fim para ver a duração.'}
+              ? "Calculada a partir do início e do fim informados."
+              : "Preencha o início e o fim para ver a duração."}
           </p>
         </div>
-        <p className='font-semibold text-[22px] tabular-nums tracking-tight'>
-          {duration == null ? '—' : formatarDuracao(duration)}
+        <p className="font-semibold text-[22px] tabular-nums tracking-tight">
+          {duration == null ? "—" : formatarDuracao(duration)}
         </p>
       </div>
 
@@ -703,7 +704,7 @@ export function ScheduleStep({
           <TextInput
             id="f-pickup"
             invalid={false}
-            onChange={(value) => setField('pickupTime', value)}
+            onChange={(value) => setField("pickupTime", value)}
             placeholder="Se for em outro dia/horário"
             value={form.pickupTime}
           />
@@ -711,7 +712,7 @@ export function ScheduleStep({
         <Field htmlFor="f-flex" label="O início pode flexionar?" optional>
           <SelectInput
             id="f-flex"
-            onChange={(value) => setField('startsFlexibility', value)}
+            onChange={(value) => setField("startsFlexibility", value)}
             options={options?.startsFlexibility}
             placeholder="Selecione"
             value={form.startsFlexibility}
@@ -725,7 +726,7 @@ export function ScheduleStep({
           <Field htmlFor="f-onsite-name" label="Pessoa no local" optional>
             <TextInput
               id="f-onsite-name"
-              onChange={(value) => setField('onSiteContactName', value)}
+              onChange={(value) => setField("onSiteContactName", value)}
               placeholder="Quem recebe a equipe"
               value={form.onSiteContactName}
             />
@@ -736,7 +737,7 @@ export function ScheduleStep({
               inputMode="tel"
               maxLength={15}
               onChange={(value) =>
-                setField('onSiteContactPhone', inputPhoneMask(value))
+                setField("onSiteContactPhone", inputPhoneMask(value))
               }
               placeholder="(49) 9 9999-9999"
               value={form.onSiteContactPhone}
@@ -780,7 +781,7 @@ export function EventStep({
         <Field htmlFor="f-type" label="Tipo de evento" optional>
           <SelectInput
             id="f-type"
-            onChange={(value) => setField('eventType', value)}
+            onChange={(value) => setField("eventType", value)}
             options={options?.eventTypes}
             placeholder="Selecione"
             value={form.eventType}
@@ -795,7 +796,7 @@ export function EventStep({
           <TextInput
             id="f-guests"
             inputMode="numeric"
-            onChange={(value) => setField('guestCount', digitsOnly(value))}
+            onChange={(value) => setField("guestCount", digitsOnly(value))}
             placeholder="Ex.: 180"
             value={form.guestCount}
           />
@@ -803,19 +804,19 @@ export function EventStep({
       </Grid2>
 
       <Field
-        error={hasError(errors, 'event.musicStyles')}
+        error={hasError(errors, "event.musicStyles")}
         hint="Escolha tudo que agrada o grupo; a playlist nasce daqui."
-        label="Estilos musicais preferidos"
+        label="Estilos musicais preferidos (para musicas do evento, sem contar o karaoke)"
         required
       >
         <CheckGrid
-          invalid={hasError(errors, 'event.musicStyles')}
+          invalid={hasError(errors, "event.musicStyles")}
           onToggle={(id, checked) =>
             setField(
-              'musicStyles',
+              "musicStyles",
               checked
                 ? [...form.musicStyles, id]
-                : form.musicStyles.filter((item) => item !== id)
+                : form.musicStyles.filter((item) => item !== id),
             )
           }
           options={optionsOr([], options?.musicStyles)}
@@ -823,7 +824,7 @@ export function EventStep({
         />
         <FieldError
           message="Escolha pelo menos um estilo."
-          show={hasError(errors, 'event.musicStyles')}
+          show={hasError(errors, "event.musicStyles")}
         />
       </Field>
 
@@ -831,21 +832,25 @@ export function EventStep({
         <Field htmlFor="f-style-other" label="Qual outro estilo?">
           <TextInput
             id="f-style-other"
-            onChange={(value) => setField('musicStyleOther', value)}
+            onChange={(value) => setField("musicStyleOther", value)}
             placeholder="Ex.: forró, sertanejo raiz, pagode…"
             value={form.musicStyleOther}
           />
         </Field>
       )}
 
-      <Field label="Extras e pedidos especiais" optional>
+      <Field
+        hint="Lembrando que algumas opções acrescentam no valor, nossa equipe vai entrar em contato posteriormente."
+        label="Extras e pedidos especiais"
+        optional
+      >
         <CheckGrid
           onToggle={(id, checked) =>
             setField(
-              'requestedExtras',
+              "requestedExtras",
               checked
                 ? [...form.requestedExtras, id]
-                : form.requestedExtras.filter((item) => item !== id)
+                : form.requestedExtras.filter((item) => item !== id),
             )
           }
           options={optionsOr([], options?.requestedExtras)}
@@ -856,7 +861,7 @@ export function EventStep({
       <Field htmlFor="f-notes" label="Alguma observação?" optional>
         <AreaInput
           id="f-notes"
-          onChange={(value) => setField('notes', value)}
+          onChange={(value) => setField("notes", value)}
           placeholder="Cerimônia, momento do parabéns, restrição de volume…"
           value={form.notes}
         />
@@ -885,8 +890,8 @@ export function ReviewStep({
   goTo,
   onSubmit,
 }: StepProps & { onSubmit: () => void }) {
-  const pj = form.contractorType === 'PJ';
-  const accepted = hasError(errors, 'acceptance.accepted');
+  const pj = form.contractorType === "PJ";
+  const accepted = hasError(errors, "acceptance.accepted");
   return (
     <StepCard
       actions={
@@ -894,7 +899,7 @@ export function ReviewStep({
           back={<BackButton onClick={() => goTo(4)} />}
           next={
             <ContinueButton
-              label={saving ? 'Enviando…' : 'Confirmar e enviar'}
+              label={saving ? "Enviando…" : "Confirmar e enviar"}
               loading={saving}
               onClick={onSubmit}
             />
@@ -916,11 +921,11 @@ export function ReviewStep({
 
       <ReviewBlock onEdit={() => goTo(1)} title="Quem está contratando">
         <ReviewLine
-          label={pj ? 'Razão social' : 'Nome'}
-          value={form.name || 'não informado'}
+          label={pj ? "Razão social" : "Nome"}
+          value={form.name || "não informado"}
         />
         {pj && <ReviewLine label="Nome fantasia" value={form.tradeName} />}
-        <ReviewLine label={pj ? 'CNPJ' : 'CPF'} value={form.document} />
+        <ReviewLine label={pj ? "CNPJ" : "CPF"} value={form.document} />
         <ReviewLine label="E-mail" value={form.email} />
         <ReviewLine label="WhatsApp" value={form.phone} />
       </ReviewBlock>
@@ -929,7 +934,7 @@ export function ReviewStep({
         <ReviewLine label="Nome do local" value={form.venueName} />
         <ReviewLine
           label="Endereço"
-          value={form.street ? addressLine(form) : 'não informado'}
+          value={form.street ? addressLine(form) : "não informado"}
         />
         <ReviewLine label="CEP" value={form.zipCode} />
         <ReviewLine
@@ -939,7 +944,7 @@ export function ReviewStep({
               <Wifi className="h-3.5 w-3.5 text-muted-foreground" />
               {labelOf(
                 options?.internetAvailability,
-                form.internetAvailable || null
+                form.internetAvailable || null,
               )}
             </span>
           }
@@ -957,7 +962,7 @@ export function ReviewStep({
             label="Acesso e montagem"
             value={form.accessNotes
               .map((id) => labelOf(options?.accessNotes, id))
-              .join(' · ')}
+              .join(" · ")}
           />
         )}
       </ReviewBlock>
@@ -965,20 +970,20 @@ export function ReviewStep({
       <ReviewBlock onEdit={() => goTo(3)} title="Horários">
         <ReviewLine
           label="Montagem"
-          value={form.setupTime || 'não informado'}
+          value={form.setupTime || "não informado"}
         />
-        <ReviewLine label="Início" value={form.startTime || 'não informado'} />
+        <ReviewLine label="Início" value={form.startTime || "não informado"} />
         <ReviewLine
           label="Fim"
           value={
             form.endTime
-              ? `${form.endTime}${form.endsNextDay ? ' (dia seguinte)' : ''}`
-              : 'não informado'
+              ? `${form.endTime}${form.endsNextDay ? " (dia seguinte)" : ""}`
+              : "não informado"
           }
         />
         <ReviewLine
           label="Duração"
-          value={duration == null ? '—' : formatarDuracao(duration)}
+          value={duration == null ? "—" : formatarDuracao(duration)}
         />
         {form.pickupTime && (
           <ReviewLine label="Retirada" value={form.pickupTime} />
@@ -986,7 +991,7 @@ export function ReviewStep({
         {form.onSiteContactName && (
           <ReviewLine
             label="Contato no local"
-            value={`${form.onSiteContactName}${form.onSiteContactPhone ? ` · ${form.onSiteContactPhone}` : ''}`}
+            value={`${form.onSiteContactName}${form.onSiteContactPhone ? ` · ${form.onSiteContactPhone}` : ""}`}
           />
         )}
       </ReviewBlock>
@@ -998,17 +1003,17 @@ export function ReviewStep({
         />
         <ReviewLine
           label="Público"
-          value={form.guestCount ? `${form.guestCount} pessoas` : '—'}
+          value={form.guestCount ? `${form.guestCount} pessoas` : "—"}
         />
         <ReviewLine
           label="Estilos"
           value={
             form.musicStyles.length
               ? form.musicStyles
-                .map((id) => labelOf(options?.musicStyles, id))
-                .join(', ') +
-              (form.musicStyleOther ? ` · ${form.musicStyleOther}` : '')
-              : 'não informado'
+                  .map((id) => labelOf(options?.musicStyles, id))
+                  .join(", ") +
+                (form.musicStyleOther ? ` · ${form.musicStyleOther}` : "")
+              : "não informado"
           }
         />
         {form.requestedExtras.length > 0 && (
@@ -1016,7 +1021,7 @@ export function ReviewStep({
             label="Extras"
             value={form.requestedExtras
               .map((id) => labelOf(options?.requestedExtras, id))
-              .join(' · ')}
+              .join(" · ")}
           />
         )}
         {form.notes && <ReviewLine label="Observações" value={form.notes} />}
@@ -1033,25 +1038,29 @@ export function ReviewStep({
           <Checkbox
             checked={form.accepted}
             className="mt-0.5"
-            onCheckedChange={(value) => setField('accepted', value === true)}
+            onCheckedChange={(value) => setField("accepted", value === true)}
           />
           <div className="space-y-0.5">
             <p
               className={
                 accepted
-                  ? 'font-medium text-destructive text-sm'
-                  : 'font-medium text-sm'
+                  ? "font-medium text-destructive text-sm"
+                  : "font-medium text-sm"
               }
             >
               Confirmo o valor de {formatToBRL(budget.agreedValue)} e as
-              informações acima.
+              informações acima.{" "}
+              {budget.details?.requestedExtras &&
+              budget.details?.requestedExtras.length > 0
+                ? "Lembrando que alguns extras podem acrescentar no valor."
+                : ""}
             </p>
-            <p className='text-muted-foreground text-xs leading-relaxed'>
+            <p className="text-muted-foreground text-xs leading-relaxed">
               Ao enviar, você registra o aceite da proposta. Nada é cobrado
               agora; o pagamento combina-se diretamente com a André Sonorização.
             </p>
             {accepted && (
-              <p className='font-medium text-destructive text-xs'>
+              <p className="font-medium text-destructive text-xs">
                 Marque a caixa para enviar.
               </p>
             )}
@@ -1059,21 +1068,21 @@ export function ReviewStep({
         </div>
 
         <Field
-          error={hasError(errors, 'acceptance.name')}
+          error={hasError(errors, "acceptance.name")}
           htmlFor="f-acceptance"
           label="Nome de quem confirma"
           required
         >
           <TextInput
             id="f-acceptance"
-            invalid={hasError(errors, 'acceptance.name')}
-            onChange={(value) => setField('acceptanceName', value)}
+            invalid={hasError(errors, "acceptance.name")}
+            onChange={(value) => setField("acceptanceName", value)}
             placeholder="Assinar o aceite"
             value={form.acceptanceName}
           />
           <FieldError
             message="Informe o nome de quem está confirmando."
-            show={hasError(errors, 'acceptance.name')}
+            show={hasError(errors, "acceptance.name")}
           />
         </Field>
 
@@ -1082,14 +1091,14 @@ export function ReviewStep({
           <label htmlFor="f-website">Não preencha este campo</label>
           <TextInput
             id="f-website"
-            onChange={(value) => setField('website', value)}
+            onChange={(value) => setField("website", value)}
             tabIndex={-1}
             value={form.website}
           />
         </div>
       </div>
 
-      <p className='text-muted-foreground text-xs leading-relaxed'>
+      <p className="text-muted-foreground text-xs leading-relaxed">
         Depois do envio, você recebe o número de protocolo e a André Sonorização
         confirma tudo pelo WhatsApp. Este link continua válido para consultas.
       </p>
@@ -1113,11 +1122,11 @@ export function SuccessView({
         <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground">
           <CheckCircle2 className="h-7 w-7" />
         </div>
-        <h2 className='mt-4 font-semibold text-[22px] tracking-tight'>
+        <h2 className="mt-4 font-semibold text-[22px] tracking-tight">
           Recebido! Seu evento está reservado
         </h2>
-        <p className='mx-auto mt-2 max-w-[46ch] text-muted-foreground text-sm leading-relaxed'>
-          {firstName(budget.clientName)}, confirmamos o aceite de{' '}
+        <p className="mx-auto mt-2 max-w-[46ch] text-muted-foreground text-sm leading-relaxed">
+          {firstName(budget.clientName)}, confirmamos o aceite de{" "}
           {formatToBRL(result?.agreedValue ?? budget.agreedValue)} e as
           informações do evento. A equipe entra em contato pelo WhatsApp para
           alinhar os últimos detalhes.
@@ -1130,13 +1139,13 @@ export function SuccessView({
         )}
 
         {result?.durationMinutes != null && (
-          <p className='mt-4 text-muted-foreground text-sm'>
-            Duração prevista do serviço:{' '}
+          <p className="mt-4 text-muted-foreground text-sm">
+            Duração prevista do serviço:{" "}
             {formatarDuracao(result.durationMinutes)}
           </p>
         )}
 
-        <div className='mt-6 grid justify-center gap-2 text-muted-foreground text-sm'>
+        <div className="mt-6 grid justify-center gap-2 text-muted-foreground text-sm">
           <p className="flex items-center justify-center gap-2">
             <MapPin className="h-4 w-4" />
             {eventDateLabel(budget.eventDate)}
@@ -1160,10 +1169,10 @@ export function InvalidLinkView() {
         <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-muted text-muted-foreground">
           <Info className="h-6 w-6" />
         </div>
-        <h2 className='mt-4 font-semibold text-lg tracking-tight'>
+        <h2 className="mt-4 font-semibold text-lg tracking-tight">
           Este link não está mais disponível
         </h2>
-        <p className='mx-auto mt-2 max-w-[44ch] text-muted-foreground text-sm leading-relaxed'>
+        <p className="mx-auto mt-2 max-w-[44ch] text-muted-foreground text-sm leading-relaxed">
           A proposta pode ter sido atualizada ou substituída por uma nova. Peça
           o link atualizado para a André Sonorização e abra por lá.
         </p>

@@ -7,18 +7,18 @@
  * pill de rascunho salvo, stepper numerado e um cartão por etapa com o rodapé
  * de ações dentro do próprio cartão.
  */
-import { Check, Loader2, Volume2 } from 'lucide-react';
-import { ThemeSwitcher } from '@/components/navbar-components/theme-switcher';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
-import { FORM_STEPS } from '../-form';
-import type { Option } from '../-types';
+import { Check, Loader2, Volume2 } from "lucide-react";
+import { ThemeSwitcher } from "@/components/navbar-components/theme-switcher";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { FORM_STEPS } from "../-form";
+import type { Option } from "../-types";
 
 export function PublicTopbar({
   savedAt,
@@ -35,10 +35,10 @@ export function PublicTopbar({
             <Volume2 className="h-[18px] w-[18px]" />
           </span>
           <div className="leading-tight">
-            <p className='font-semibold text-sm tracking-tight'>
+            <p className="font-semibold text-sm tracking-tight">
               André Sonorização
             </p>
-            <p className='text-muted-foreground text-xs'>
+            <p className="text-muted-foreground text-xs">
               Confirmação de proposta de evento
             </p>
           </div>
@@ -67,10 +67,10 @@ function SavePill({
         <span className="h-1.5 w-1.5 rounded-full bg-primary" />
       )}
       {saving
-        ? 'Salvando…'
+        ? "Salvando…"
         : savedAt
           ? `Rascunho salvo ${savedAt}`
-          : 'Rascunho automático'}
+          : "Rascunho automático"}
     </span>
   );
 }
@@ -99,20 +99,20 @@ export function Stepper({
                   <span
                     aria-hidden
                     className={cn(
-                      'absolute top-[14px] right-1/2 h-0.5 w-full',
-                      done ? 'bg-primary' : 'bg-border'
+                      "absolute top-[14px] right-1/2 h-0.5 w-full",
+                      done ? "bg-primary" : "bg-border",
                     )}
                   />
                 )}
                 <button
-                  aria-current={active ? 'step' : undefined}
+                  aria-current={active ? "step" : undefined}
                   className={cn(
-                    'relative z-10 grid h-7 w-7 place-items-center rounded-full border-2 bg-card font-semibold text-[11px] tabular-nums transition-colors',
-                    done && 'border-primary bg-primary text-primary-foreground',
+                    "relative z-5 grid h-7 w-7 place-items-center rounded-full border-2 bg-card font-semibold text-[11px] tabular-nums transition-colors",
+                    done && "border-primary bg-primary text-primary-foreground",
                     active &&
-                    'border-primary text-primary ring-4 ring-primary/15',
-                    !(done || active) && 'border-border text-muted-foreground',
-                    index <= current ? 'cursor-pointer' : 'cursor-default'
+                      "border-primary text-primary ring-4 ring-primary/15",
+                    !(done || active) && "border-border text-muted-foreground",
+                    index <= current ? "cursor-pointer" : "cursor-default",
                   )}
                   disabled={index > current}
                   onClick={() => onSelect(index)}
@@ -122,10 +122,10 @@ export function Stepper({
                 </button>
                 <span
                   className={cn(
-                    'mt-1.5 text-[11px] leading-tight',
+                    "mt-1.5 text-[11px] leading-tight",
                     active
-                      ? 'font-medium text-foreground'
-                      : 'text-muted-foreground'
+                      ? "font-medium text-foreground"
+                      : "text-muted-foreground",
                   )}
                 >
                   {item.short}
@@ -153,15 +153,15 @@ export function StepCard({
 }) {
   return (
     <Card className="overflow-hidden rounded-lg shadow-sm">
-      <div className='px-6 pt-5 pb-1'>
-        <h2 className='font-semibold text-[18px] tracking-tight'>{title}</h2>
+      <div className="px-6 pt-5 pb-1">
+        <h2 className="font-semibold text-[18px] tracking-tight">{title}</h2>
         {description && (
           <p className="mt-1 text-[13px] text-muted-foreground">
             {description}
           </p>
         )}
       </div>
-      <CardContent className='space-y-5 px-6 pt-4 pb-6'>{children}</CardContent>
+      <CardContent className="space-y-5 px-6 pt-4 pb-6">{children}</CardContent>
       {actions && (
         <div className="flex flex-col-reverse items-stretch justify-between gap-2.5 border-t bg-muted/50 px-6 py-4 sm:flex-row sm:items-center sm:gap-3">
           {actions}
@@ -187,7 +187,7 @@ export function StepActions({
 }
 
 export function BackButton({
-  label = 'Voltar',
+  label = "Voltar",
   onClick,
 }: {
   label?: string;
@@ -249,11 +249,11 @@ export function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div className={cn('space-y-1.5', className)}>
+    <div className={cn("space-y-1.5", className)}>
       <Label
         className={cn(
-          'flex items-center gap-1 font-medium text-[13px]',
-          error && 'text-destructive'
+          "flex items-center gap-1 font-medium text-[13px]",
+          error && "text-destructive",
         )}
         htmlFor={htmlFor}
       >
@@ -265,7 +265,7 @@ export function Field({
       </Label>
       {children}
       {hint && !error && (
-        <p className='text-muted-foreground text-xs leading-relaxed'>{hint}</p>
+        <p className="text-muted-foreground text-xs leading-relaxed">{hint}</p>
       )}
     </div>
   );
@@ -273,13 +273,13 @@ export function Field({
 
 export function FieldError({
   show,
-  message = 'Confira este campo.',
+  message = "Confira este campo.",
 }: {
   show: boolean;
   message?: string;
 }) {
   return show ? (
-    <p className='font-medium text-destructive text-xs'>{message}</p>
+    <p className="font-medium text-destructive text-xs">{message}</p>
   ) : null;
 }
 
@@ -302,14 +302,14 @@ export function TextInput({
   onChange: (v: string) => void;
   placeholder?: string;
   invalid?: boolean;
-  inputMode?: 'text' | 'numeric' | 'tel' | 'email';
+  inputMode?: "text" | "numeric" | "tel" | "email";
   maxLength?: number;
   tabIndex?: number;
 }) {
   return (
     <Input
       className={cn(
-        invalid && 'border-destructive focus-visible:ring-destructive/30'
+        invalid && "border-destructive focus-visible:ring-destructive/30",
       )}
       id={id}
       inputMode={inputMode}
@@ -364,9 +364,9 @@ export function RadioCards({
   return (
     <RadioGroup
       className={cn(
-        'grid gap-2',
-        columns === 2 && 'sm:grid-cols-2',
-        columns === 3 && 'grid-cols-1 sm:grid-cols-3'
+        "grid gap-2",
+        columns === 2 && "sm:grid-cols-2",
+        columns === 3 && "grid-cols-1 sm:grid-cols-3",
       )}
       onValueChange={onChange}
       value={value}
@@ -377,10 +377,10 @@ export function RadioCards({
         return (
           <Label
             className={cn(
-              'flex cursor-pointer items-start gap-2.5 rounded-md border p-3 text-sm transition-colors',
+              "flex cursor-pointer items-start gap-2.5 rounded-md border p-3 text-sm transition-colors",
               selected
-                ? 'border-primary bg-primary/5'
-                : 'hover:border-muted-foreground/30 hover:bg-muted/40'
+                ? "border-primary bg-primary/5"
+                : "hover:border-muted-foreground/30 hover:bg-muted/40",
             )}
             htmlFor={id}
             key={option.id}
@@ -388,12 +388,12 @@ export function RadioCards({
             <RadioGroupItem className="mt-0.5" id={id} value={option.id} />
             <span className="flex flex-col gap-0.5">
               <span
-                className={cn('font-medium', selected && 'text-foreground')}
+                className={cn("font-medium", selected && "text-foreground")}
               >
                 {option.label}
               </span>
               {option.hint && (
-                <span className='font-normal text-muted-foreground text-xs leading-relaxed'>
+                <span className="font-normal text-muted-foreground text-xs leading-relaxed">
                   {option.hint}
                 </span>
               )}
@@ -420,10 +420,10 @@ export function CheckCard({
   return (
     <Label
       className={cn(
-        'flex cursor-pointer items-start gap-2.5 rounded-md border p-3 text-sm transition-colors',
+        "flex cursor-pointer items-start gap-2.5 rounded-md border p-3 text-sm transition-colors",
         checked
-          ? 'border-primary bg-primary/5'
-          : 'hover:border-muted-foreground/30 hover:bg-muted/40'
+          ? "border-primary bg-primary/5"
+          : "hover:border-muted-foreground/30 hover:bg-muted/40",
       )}
     >
       <Checkbox
@@ -434,7 +434,7 @@ export function CheckCard({
       <span className="flex flex-col gap-0.5">
         <span className="font-medium">{label}</span>
         {hint && (
-          <span className='font-normal text-muted-foreground text-xs leading-relaxed'>
+          <span className="font-normal text-muted-foreground text-xs leading-relaxed">
             {hint}
           </span>
         )}
@@ -457,8 +457,8 @@ export function CheckGrid({
   return (
     <div
       className={cn(
-        'grid gap-2 sm:grid-cols-2',
-        invalid && 'rounded-lg ring-1 ring-destructive/40'
+        "grid gap-2 sm:grid-cols-2",
+        invalid && "rounded-lg ring-1 ring-destructive/40",
       )}
     >
       {options.map((option) => (
@@ -518,8 +518,8 @@ export function TimeInput({
   return (
     <Input
       className={cn(
-        'tabular-nums',
-        invalid && 'border-destructive focus-visible:ring-destructive/30'
+        "tabular-nums",
+        invalid && "border-destructive focus-visible:ring-destructive/30",
       )}
       id={id}
       onChange={(event) => onChange(event.target.value)}
@@ -557,15 +557,15 @@ export function TimelineRow({
       <div className="min-w-0 flex-1">
         <Label
           className={cn(
-            'cursor-pointer font-medium text-sm',
-            invalid && 'text-destructive'
+            "cursor-pointer font-medium text-sm",
+            invalid && "text-destructive",
           )}
           htmlFor={htmlFor}
         >
           {title}
         </Label>
         {span && (
-          <p className='text-muted-foreground text-xs leading-relaxed'>
+          <p className="text-muted-foreground text-xs leading-relaxed">
             {span}
           </p>
         )}
@@ -586,19 +586,19 @@ export function TimelineRow({
 export function Callout({
   icon,
   children,
-  tone = 'muted',
+  tone = "muted",
 }: {
   icon?: React.ReactNode;
   children: React.ReactNode;
-  tone?: 'muted' | 'primary';
+  tone?: "muted" | "primary";
 }) {
   return (
     <div
       className={cn(
-        'flex gap-3 rounded-lg border p-4 text-sm leading-relaxed',
-        tone === 'primary'
-          ? 'border-primary/30 bg-primary/5'
-          : 'bg-muted/40 text-muted-foreground'
+        "flex gap-3 rounded-lg border p-4 text-sm leading-relaxed",
+        tone === "primary"
+          ? "border-primary/30 bg-primary/5"
+          : "bg-muted/40 text-muted-foreground",
       )}
     >
       {icon && <span className="mt-0.5 shrink-0 text-primary">{icon}</span>}
@@ -621,15 +621,15 @@ export function ValueBlock({
 }) {
   return (
     <div className="rounded-lg bg-primary p-5 text-primary-foreground">
-      <p className='font-medium text-[11px] uppercase tracking-wider opacity-80'>
+      <p className="font-medium text-[11px] uppercase tracking-wider opacity-80">
         {label}
       </p>
-      <p className='mt-1 font-semibold text-[32px] tabular-nums leading-none tracking-tight'>
+      <p className="mt-1 font-semibold text-[32px] tabular-nums leading-none tracking-tight">
         {value}
       </p>
       {caption && <p className="mt-2 text-sm opacity-80">{caption}</p>}
       {lines && (
-        <div className='mt-4 space-y-1 border-primary-foreground/25 border-t pt-3 text-xs opacity-80'>
+        <div className="mt-4 space-y-1 border-primary-foreground/25 border-t pt-3 text-xs opacity-80">
           {lines}
         </div>
       )}
@@ -647,7 +647,7 @@ export function OfferList({
 }) {
   return (
     <div className="overflow-hidden rounded-lg border">
-      <p className='bg-muted px-4 py-2 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider'>
+      <p className="bg-muted px-4 py-2 font-semibold text-[11px] text-muted-foreground uppercase tracking-wider">
         {section}
       </p>
       {items.map((item) => (
@@ -658,12 +658,12 @@ export function OfferList({
           <div className="min-w-0">
             <p className="font-medium">{item.name}</p>
             {item.detail && (
-              <p className='text-muted-foreground text-xs leading-relaxed'>
+              <p className="text-muted-foreground text-xs leading-relaxed">
                 {item.detail}
               </p>
             )}
           </div>
-          <p className='shrink-0 text-muted-foreground text-xs'>incluso</p>
+          <p className="shrink-0 text-muted-foreground text-xs">incluso</p>
         </div>
       ))}
     </div>
@@ -682,7 +682,7 @@ export function ReviewBlock({
   return (
     <div className="overflow-hidden rounded-lg border">
       <div className="flex items-center justify-between gap-3 bg-muted px-4 py-2.5">
-        <h3 className='font-semibold text-sm'>{title}</h3>
+        <h3 className="font-semibold text-sm">{title}</h3>
         <Button onClick={onEdit} size="sm" variant="ghost">
           Editar
         </Button>
@@ -702,14 +702,14 @@ export function ReviewLine({
   return (
     <div className="grid grid-cols-1 gap-1 border-t px-4 py-2.5 text-sm first:border-t-0 sm:grid-cols-[190px_1fr] sm:gap-4">
       <span className="text-muted-foreground">{label}</span>
-      <span className="break-words font-medium">{value || '—'}</span>
+      <span className="break-words font-medium">{value || "—"}</span>
     </div>
   );
 }
 
 export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <p className='font-semibold text-[11px] text-muted-foreground uppercase tracking-wider'>
+    <p className="font-semibold text-[11px] text-muted-foreground uppercase tracking-wider">
       {children}
     </p>
   );
@@ -723,6 +723,6 @@ export function Grid2({
   className?: string;
 }) {
   return (
-    <div className={cn('grid gap-4 sm:grid-cols-2', className)}>{children}</div>
+    <div className={cn("grid gap-4 sm:grid-cols-2", className)}>{children}</div>
   );
 }
