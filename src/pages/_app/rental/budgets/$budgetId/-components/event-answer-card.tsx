@@ -12,10 +12,11 @@
  */
 /** biome-ignore-all lint/complexity/noVoid: <explanation> */
 import { useQueryClient } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { differenceInMinutes, format } from "date-fns";
 import {
   Archive,
   ClipboardList,
+  Eye,
   History,
   Loader2,
   RefreshCw,
@@ -71,6 +72,28 @@ type RevisionDto = {
   resolvedAt: string | null;
 };
 
+/** Linha de `viewing.byDevice`: um visitante (aparelho + IP) do link. */
+type ViewDeviceDto = {
+  device: string;
+  views: number;
+  firstSeenAt: string;
+  lastSeenAt: string;
+};
+
+/** Resumo de visitas: a unidade é visita, não request. */
+type ViewingDto = {
+  visits: number;
+  devices: number;
+  trackedVisits: number;
+  windowMinutes: number;
+  firstViewAt: string | null;
+  lastViewAt: string | null;
+  byDevice: ViewDeviceDto[];
+};
+
+/** "agora", "há 12 min", "há 3 h", "ontem às 14:03", "20/11 às 09:12". */
+/** "agora", "há 12 min", "há 3 h", "ontem às 14:03", "20/11 às 09:12". */
+
 type EventDetailsDto = {
   budgetId: string;
   status: string;
@@ -80,6 +103,8 @@ type EventDetailsDto = {
   protocol: string | null;
   publicUrl: string | null;
   publicViewCount: number;
+  /** Visitas rastreadas pelo back; ausente enquanto o hook for antigo. */
+  viewing?: ViewingDto;
   submitted: boolean;
   durationMinutes: number | null;
   details: PublicDetailsDto | null;
@@ -87,6 +112,130 @@ type EventDetailsDto = {
   openReview: RevisionDto | null;
   revisions: RevisionDto[];
 };
+
+/** "agora", "há 12 min", "há 3 h", "ontem às 14:03", "20/11 às 09:12". */
+/** "agora", "há 12 min", "há 3 h", "ontem às 14:03", "20/11 às 09:12". */
+const agoLabel = (value: string | null): string => {
+  if (!value) {
+    return "—";
+  }
+  const date = new Date(value);
+  const minutes = differenceInMinutes(new Date(), date);
+  if (minutes < 1) {
+    return "agora";
+  }
+  if (minutes < 60) {
+    return `há ${minutes} min`;
+  }
+  if (minutes < 24 * 60) {
+    return `há ${Math.round(minutes / 60)} h`;
+  }
+  if (minutes < 48 * 60) {
+    return `ontem às ${format(date, "HH:mm")}`;
+  }
+  return format(date, "dd/MM 'às' HH:mm");
+};
+
+const visitWord = (count: number): string =>
+  count === 1 ? "1 visita" : `${count} visitas`;
+
+type DeviceGroup = ViewDeviceDto & { visitors: number };
+
+/**
+ * Dois celulares iguais abrem o mesmo link: são dois visitantes, mas uma linha
+ * só na tela ("iPhone · Safari — 4 visitas · 2 aparelhos").
+ */
+const groupViews = (rows: ViewDeviceDto[]): DeviceGroup[] => {
+  const map = new Map<string, DeviceGroup>();
+  for (const row of rows) {
+    const current = map.get(row.device);
+    if (!current) {
+      map.set(row.device, { ...row, visitors: 1 });
+      continue;
+    }
+    current.visitors += 1;
+    current.views += row.views;
+    if (new Date(row.lastSeenAt) > new Date(current.lastSeenAt)) {
+      current.lastSeenAt = row.lastSeenAt;
+    }
+    if (new Date(row.firstSeenAt) < new Date(current.firstSeenAt)) {
+      current.firstSeenAt = row.firstSeenAt;
+    }
+  }
+  return [...map.values()].sort(
+    (a, b) =>
+      new Date(b.lastSeenAt).getTime() - new Date(a.lastSeenAt).getTime(),
+  );
+};
+
+/** Resposta (viva ou congelada) → estado do formulário, com as máscaras. */
+
+/**
+ * "O cliente abriu?" — quantas visitas, de quantos aparelhos e quando.
+ *
+ * A unidade é visita, não request: com a janela do back
+ * (`PUBLIC_VIEW_WINDOW_MINUTES`, 30 min por padrão), recarga, retorno para a
+ * aba, retry de 4G e preview de link de robô não somam visita nova.
+ */
+
+/**
+ * "O cliente abriu?" — quantas visitas, de quantos aparelhos e quando.
+ *
+ * A unidade é visita, não request: com a janela do back
+ * (`PUBLIC_VIEW_WINDOW_MINUTES`, 30 min por padrão), recarga, retorno para a
+ * aba, retry de 4G e preview de link de robô não somam visita nova.
+ */
+function ViewingSummary({ viewing }: { viewing: ViewingDto }) {
+  const groups = groupViews(viewing.byDevice);
+  // Link criado antes desta contagem: o total antigo vale, o detalhe começa agora.
+  const legacy = viewing.trackedVisits < viewing.visits;
+
+  return (
+    <div className="rounded-lg border bg-muted/30 p-3">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+        <Eye className="h-4 w-4 text-muted-foreground" />
+        <span className="font-medium">{visitWord(viewing.visits)}</span>
+        {viewing.devices > 0 ? (
+          <span className="text-muted-foreground">
+            ·{" "}
+            {viewing.devices === 1
+              ? "1 aparelho"
+              : `${viewing.devices} aparelhos`}
+            {viewing.lastViewAt
+              ? ` · última ${agoLabel(viewing.lastViewAt)}`
+              : ""}
+          </span>
+        ) : (
+          <span className="text-muted-foreground">
+            · nenhuma abertura registrada desde que o link existe
+          </span>
+        )}
+      </div>
+
+      {groups.length > 0 && (
+        <ul className="mt-2 space-y-1 text-muted-foreground text-xs">
+          {groups.map((group) => (
+            <li className="flex flex-wrap gap-x-2" key={group.device}>
+              <span className="text-foreground">{group.device}</span>
+              <span>{visitWord(group.views)}</span>
+              {group.visitors > 1 && <span>· {group.visitors} aparelhos</span>}
+              <span>· primeira {agoLabel(group.firstSeenAt)}</span>
+              <span>· última {agoLabel(group.lastSeenAt)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <p className="mt-2 text-muted-foreground text-xs leading-relaxed">
+        Recarregar dentro de {viewing.windowMinutes} min não conta como visita
+        nova, e preview de link (WhatsApp, robôs) não entra na conta.
+        {legacy
+          ? " O total anterior a essa regra foi preservado; o detalhe por aparelho começa daqui."
+          : ""}
+      </p>
+    </div>
+  );
+}
 
 const dateTime = (value: string | null): string =>
   value ? format(new Date(value), "dd/MM/yyyy 'às' HH:mm") : "—";
@@ -180,8 +329,8 @@ export function EventAnswerCard({ budgetId }: { budgetId: string }) {
         <CardContent className="text-muted-foreground text-sm leading-relaxed">
           {data?.publicUrl
             ? `O link está no ar${
-                (data.publicViewCount ?? 0) > 0
-                  ? ` e já foi aberto ${data.publicViewCount} vez(es)`
+                (data.viewing?.visits ?? 0) > 0
+                  ? ` e teve ${data.viewing?.visits} visita(s)`
                   : " e ainda não foi aberto"
               }. Assim que o cliente responder, os dados aparecem aqui, no mesmo
               formato da tela de revisão que ele confere antes de enviar.`
@@ -220,6 +369,8 @@ export function EventAnswerCard({ budgetId }: { budgetId: string }) {
       </CardHeader>
 
       <CardContent className="space-y-4">
+        {data.viewing && <ViewingSummary viewing={data.viewing} />}
+
         {data.openReview && (
           <Alert>
             <RefreshCw className="h-4 w-4" />

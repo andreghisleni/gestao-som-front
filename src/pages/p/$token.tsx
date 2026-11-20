@@ -67,7 +67,11 @@ export const Route = createFileRoute("/p/$token")({
 function PublicEventPage() {
   const { token } = Route.useParams();
   const queryClient = useQueryClient();
-  const budgetQuery = useGetPublicBudget(token);
+  // A contagem de visita agora tem janela no back; rebuscar no foco de aba só
+  // inflaria o número.
+  const budgetQuery = useGetPublicBudget(token, {
+    query: { refetchOnWindowFocus: false, staleTime: 60_000 },
+  });
   const optionsQuery = useGetEventFormOptions();
   const saveDraft = useSavePublicEventDetails();
   const submitDetails = useSubmitPublicEventDetails();

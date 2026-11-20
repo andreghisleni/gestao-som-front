@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/useAwait: <explanation> */
-import { useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from "@tanstack/react-query";
 import {
   Check,
   Copy,
@@ -11,14 +11,14 @@ import {
   Save,
   Trash2,
   Unlink,
-} from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   getBudgetByIdQueryKey,
   useCreateBudgetOfferItem,
@@ -28,7 +28,7 @@ import {
   useRevokeBudgetShareLink,
   useRotateBudgetShareLink,
   useUpdateBudgetOfferItem,
-} from '@/http/generated';
+} from "@/http/generated";
 
 /**
  * Linhas que o cliente lê na página pública.
@@ -77,8 +77,8 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
   const publicViewCount = budget.publicViewCount ?? 0;
   const queryClient = useQueryClient();
   const [lines, setLines] = useState<OfferLine[]>(budget.offerItems ?? []);
-  const [newName, setNewName] = useState('');
-  const [newDetail, setNewDetail] = useState('');
+  const [newName, setNewName] = useState("");
+  const [newDetail, setNewDetail] = useState("");
   const [copied, setCopied] = useState(false);
   const [confirmRotate, setConfirmRotate] = useState(false);
 
@@ -106,14 +106,16 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
     try {
       await createLink.mutateAsync({ budgetId });
       await refresh();
-      toast.success('Link público pronto. Pode enviar para o cliente.');
+      toast.success("Link público pronto. Pode enviar para o cliente.");
     } catch {
-      toast.error('Não foi possível gerar o link.');
+      toast.error("Não foi possível gerar o link.");
     }
   };
 
   const onCopy = async () => {
-    if (!shareUrl) { return; }
+    if (!shareUrl) {
+      return;
+    }
     await navigator.clipboard.writeText(shareUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
@@ -123,9 +125,9 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
     try {
       await revokeLink.mutateAsync({ budgetId });
       await refresh();
-      toast('Link revogado. O cliente não consegue mais abrir a página.');
+      toast("Link revogado. O cliente não consegue mais abrir a página.");
     } catch {
-      toast.error('Não foi possível revogar o link.');
+      toast.error("Não foi possível revogar o link.");
     }
   };
 
@@ -134,20 +136,20 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
       await rotateLink.mutateAsync({ budgetId });
       await refresh();
       setConfirmRotate(false);
-      toast.success('Link novo gerado. O anterior parou de funcionar.');
+      toast.success("Link novo gerado. O anterior parou de funcionar.");
     } catch {
-      toast.error('Não foi possível trocar o link.');
+      toast.error("Não foi possível trocar o link.");
     }
   };
 
   const onAddLine = async () => {
     const name = newName.trim();
     if (name.length < 2) {
-      toast.error('Escreva pelo menos o nome da linha (ex.: Sistema de som).');
+      toast.error("Escreva pelo menos o nome da linha (ex.: Sistema de som).");
       return;
     }
     if (lines.length >= 12) {
-      toast.error('A proposta pública tem no máximo 12 linhas.');
+      toast.error("A proposta pública tem no máximo 12 linhas.");
       return;
     }
     try {
@@ -155,23 +157,23 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
         budgetId,
         data: { name, detail: newDetail.trim() || null, order: lines.length },
       });
-      setNewName('');
-      setNewDetail('');
+      setNewName("");
+      setNewDetail("");
       await refresh();
     } catch {
-      toast.error('Não foi possível adicionar a linha.');
+      toast.error("Não foi possível adicionar a linha.");
     }
   };
 
   const onPatchLine = async (id: string, patch: Partial<OfferLine>) => {
     setLines((current) =>
-      current.map((l) => (l.id === id ? { ...l, ...patch } : l))
+      current.map((l) => (l.id === id ? { ...l, ...patch } : l)),
     );
   };
 
   const onSaveLine = async (line: OfferLine) => {
     if (line.name.trim().length < 2) {
-      toast.error('O nome da linha não pode ficar vazio.');
+      toast.error("O nome da linha não pode ficar vazio.");
       return;
     }
     try {
@@ -181,9 +183,9 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
         data: { name: line.name.trim(), detail: line.detail?.trim() || null },
       });
       await refresh();
-      toast.success('Linha atualizada.');
+      toast.success("Linha atualizada.");
     } catch {
-      toast.error('Não foi possível salvar a linha.');
+      toast.error("Não foi possível salvar a linha.");
     }
   };
 
@@ -192,13 +194,15 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
       await deleteItem.mutateAsync({ budgetId, id });
       await refresh();
     } catch {
-      toast.error('Não foi possível remover a linha.');
+      toast.error("Não foi possível remover a linha.");
     }
   };
 
   const onMove = async (index: number, direction: -1 | 1) => {
     const target = index + direction;
-    if (target < 0 || target >= lines.length) { return; }
+    if (target < 0 || target >= lines.length) {
+      return;
+    }
     const next = [...lines];
     [next[index], next[target]] = [next[target], next[index]];
     setLines(next);
@@ -209,7 +213,7 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
       });
       await refresh();
     } catch {
-      toast.error('Não foi possível reordenar.');
+      toast.error("Não foi possível reordenar.");
     }
   };
 
@@ -221,23 +225,26 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
         <CardTitle className="flex items-center gap-2 text-base">
           <Link2 className="h-4 w-4" /> Página pública do evento
         </CardTitle>
-        <div className='flex items-center gap-2 text-muted-foreground text-xs'>
+        <div
+          className="flex items-center gap-2 text-muted-foreground text-xs"
+          title="Visitas, não aberturas: recarregar dentro da janela (PUBLIC_VIEW_WINDOW_MINUTES no .env do back, 30 min por padrão) conta como uma visita só, e preview de robô não entra na conta. O detalhe por aparelho está no card Dados do evento."
+        >
           <Eye className="h-3.5 w-3.5" />
-          {publicViewCount} visualização(ões)
+          {publicViewCount} {publicViewCount === 1 ? "visita" : "visitas"}
         </div>
       </CardHeader>
 
       <CardContent className="space-y-5 pt-5">
         {publicToken ? (
           <div className="space-y-3">
-            <Label className='text-muted-foreground text-xs'>
+            <Label className="text-muted-foreground text-xs">
               Link para enviar ao cliente
             </Label>
             <div className="flex gap-2">
               <Input
                 className="font-mono text-xs"
                 readOnly
-                value={shareUrl ?? ''}
+                value={shareUrl ?? ""}
               />
               <Button onClick={onCopy} size="icon" variant="outline">
                 {copied ? (
@@ -277,17 +284,17 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
                 </Button>
               )}
             </div>
-            <p className='text-muted-foreground text-xs'>
+            <p className="text-muted-foreground text-xs">
               Trocar o link derruba o anterior — útil se você enviou para a
               pessoa errada.
             </p>
           </div>
         ) : (
           <div className="space-y-3 rounded-lg border border-dashed bg-muted/10 p-4">
-            <p className='text-muted-foreground text-sm'>
+            <p className="text-muted-foreground text-sm">
               {revoked
-                ? 'Este link foi revogado. Gere um novo para reabrir a coleta de dados.'
-                : 'Gere o link para o cliente confirmar contratante, local, horários e repertório. O valor mostrado é o fechamento atual.'}
+                ? "Este link foi revogado. Gere um novo para reabrir a coleta de dados."
+                : "Gere o link para o cliente confirmar contratante, local, horários e repertório. O valor mostrado é o fechamento atual."}
             </p>
             <Button
               disabled={createLink.isPending}
@@ -306,12 +313,12 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
 
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <Label className='font-semibold text-sm'>
+            <Label className="font-semibold text-sm">
               O que está incluso (texto da proposta)
             </Label>
             <Badge variant="outline">{lines.length}/12</Badge>
           </div>
-          <p className='text-muted-foreground text-xs'>
+          <p className="text-muted-foreground text-xs">
             Não aparece equipamento nem preço. Só a descrição que o cliente lê —
             e você pode ajustar quando quiser.
           </p>
@@ -320,7 +327,7 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
             <div className="rounded-lg border bg-card p-3" key={line.id}>
               <div className="flex items-center gap-2">
                 <Input
-                  className='h-8 font-medium text-sm'
+                  className="h-8 font-medium text-sm"
                   onBlur={() => onSaveLine(line)}
                   onChange={(e) =>
                     onPatchLine(line.id, { name: e.target.value })
@@ -328,7 +335,7 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
                   placeholder="Ex.: Sistema de som"
                   value={line.name}
                 />
-                {line.source === 'AUTO' && (
+                {line.source === "AUTO" && (
                   <Badge className="shrink-0" variant="secondary">
                     auto
                   </Badge>
@@ -371,13 +378,13 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
                   onPatchLine(line.id, { detail: e.target.value })
                 }
                 placeholder="Detalhe opcional (ex.: PA + subgrave para até 200 pessoas)"
-                value={line.detail ?? ''}
+                value={line.detail ?? ""}
               />
             </div>
           ))}
 
           {lines.length === 0 && (
-            <div className='rounded-lg border border-dashed bg-muted/10 p-4 text-muted-foreground text-sm'>
+            <div className="rounded-lg border border-dashed bg-muted/10 p-4 text-muted-foreground text-sm">
               Nenhuma linha ainda. Adicione abaixo ou gere o link — o sistema
               aproveita os nomes dos ambientes como ponto de partida.
             </div>
@@ -415,7 +422,7 @@ export function PublicOfferCard({ budgetId, budget }: Props) {
           </div>
         </div>
 
-        <div className='flex items-center gap-2 rounded-lg bg-primary/5 p-3 text-muted-foreground text-xs'>
+        <div className="flex items-center gap-2 rounded-lg bg-primary/5 p-3 text-muted-foreground text-xs">
           <Save className="h-4 w-4 shrink-0 text-primary" />
           Ao salvar uma linha, a página pública já mostra o texto novo na
           próxima abertura do link.
