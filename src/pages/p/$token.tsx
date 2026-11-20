@@ -53,6 +53,12 @@ import {
   validateAll,
   validateStep,
 } from "./-form";
+import {
+  BRAND_DESCRIPTION,
+  BRAND_TITLE,
+  buildEventPageMeta,
+  useEventPageMeta,
+} from "./-meta";
 import type {
   FormOptionsDto,
   PublicBudgetDto,
@@ -61,6 +67,16 @@ import type {
 } from "./-types";
 
 export const Route = createFileRoute("/p/$token")({
+  // Título/descrição que o React escreve no documento. O card do WhatsApp vem
+  // do <head> estático do index.html (robô de preview não roda JS); daqui
+  // cuidamos da aba do navegador e de quem renderiza. buildEventPageMeta
+  // refina com a data e a cidade assim que a proposta chega.
+  head: () => ({
+    meta: [
+      { title: BRAND_TITLE },
+      { name: "description", content: BRAND_DESCRIPTION },
+    ],
+  }),
   component: PublicEventPage,
 });
 
@@ -78,6 +94,9 @@ function PublicEventPage() {
 
   const budget = budgetQuery.data as PublicBudgetDto | undefined;
   const options = optionsQuery.data as FormOptionsDto | undefined;
+
+  const pageMeta = useMemo(() => buildEventPageMeta(budget), [budget]);
+  useEventPageMeta(pageMeta);
 
   const [form, setForm] = useState<FormState>(emptyForm);
   const [step, setStep] = useState(0);

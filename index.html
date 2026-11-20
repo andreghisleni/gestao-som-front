@@ -1,10 +1,56 @@
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="pt-BR" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <!--
+      CARD DE LINK (WhatsApp, Telegram, Instagram, Slack, Teams...).
+      Esses robôs NÃO executam JavaScript: fazem um GET na URL e leem este bloco.
+      Como o vercel.json reescreve tudo para / (SPA), o mesmo HTML serve para a
+      raiz e para /p/:token — um link de orçamento compartido sai com a marca e a
+      imagem, e não mais com "Vite + React + TS".
+      Os dados do evento (data, cidade, status) entram pela camada JS em
+      src/pages/p/-meta.ts, que vale para a aba do navegador, o Googlebot e
+      qualquer preview que renderize.
+    -->
+    <title>André Sonorização · Som e Karaokê</title>
+    <meta
+      name="description"
+      content="Confirme os dados do seu evento e assine a proposta pelo celular."
+    />
+    <meta name="theme-color" content="#000000" />
+    <!-- Painel interno + link com token: não indexar. Revertir se um dia houver página pública de verdade. -->
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="André Sonorização" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:url" content="https://gestao-som.andreg.com.br/" />
+    <meta property="og:title" content="André Sonorização · Som e Karaokê" />
+    <meta
+      property="og:description"
+      content="Confirme os dados do seu evento e assine a proposta pelo celular."
+    />
+    <meta property="og:image" content="https://gestao-som.andreg.com.br/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="André Sonorização — aluguel de som e karaokê"
+    />
+
+    <!-- Twitter/X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="André Sonorização · Som e Karaokê" />
+    <meta
+      name="twitter:description"
+      content="Confirme os dados do seu evento e assine a proposta pelo celular."
+    />
+    <meta name="twitter:image" content="https://gestao-som.andreg.com.br/og-image.png" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" sizes="64x64" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   </head>
   <body>
     <div id="root"></div>
